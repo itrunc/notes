@@ -135,7 +135,7 @@ postgres.exe    (8468)
     postgres.exe    (8444)
 ```
 
-上边进程信息显示可知slave比master少2个进程
+上边进程信息显示可知，在进程数目上slave比master少2个，但实际上他们之间的进程功能并不相同。在linux中能更清晰的看出他们的区别
 
 ##验证
 1. 用psql登录slave，切换到learning数据库(已存在test表)，从test表查询数据，并尝试往test表插入数据

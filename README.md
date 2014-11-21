@@ -11,6 +11,7 @@
 
 ###PostgreSQL
 * [数据类型](database/postgresql/数据类型.md)
+* [同主机搭建hot standby](database/postgresql/同主机搭建hot standby.md)
 
 ##Markdown
 * [标题](markdown/标题.md)
