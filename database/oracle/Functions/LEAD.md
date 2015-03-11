@@ -7,7 +7,7 @@
 ##描述
 LEAD函数是一个分析函数。它提供了获取结果集中指定的向后偏移位置的相关值。该函数与[LAG](./LAG.md)的区别是偏移方向相反。
 
-参数offset是一个大于0的整数值，默认为1，意为在结果集中往前数offset行。参数default用于定义当offset指定的行超出结果集范围时的默认值，该参数是可选的，默认为null。
+参数offset是一个大于0的整数值，默认为1，意为在结果集中向后数offset行。参数default用于定义当offset指定的行超出结果集范围时的默认值，该参数是可选的，默认为null。
 
 `{RESPECT | IGNORE} NULLS` 用于确定当value_expr为null时是否被计算在内，默认为RESPECT NULLS，即null值也当作1行
 
