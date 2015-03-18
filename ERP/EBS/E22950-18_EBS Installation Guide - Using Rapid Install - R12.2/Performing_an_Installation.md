@@ -42,10 +42,9 @@ Follow the instructions in the section [Before You Begin](#) in [Getting Started
     ![ig_ch2_choosewizardop.gif](../../../public/imgs/ig_ch2_choosewizardop.gif)
     
     The available actions are as follows:
-    
     * Install Oracle E-Business Suite Release 12.2.0
 
-        This action sets up a new, fully configured system, with either a fresh database or a Vision Demo database. The configuration is derived from the system-specific configuration parameters you will enter in the Rapid Install wizard and save in the Oracle E-Business Suite database (conf_<SID>.txt file initially, until the database has been created).
+        This action sets up a new, fully configured system, with either a fresh database or a Vision Demo database. The configuration is derived from the system-specific configuration parameters you will enter in the Rapid Install wizard and save in the Oracle E-Business Suite database (conf_&lt;SID&gt;.txt file initially, until the database has been created).
 
     * Express Configuration
 
