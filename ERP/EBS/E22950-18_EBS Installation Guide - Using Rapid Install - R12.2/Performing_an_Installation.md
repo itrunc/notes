@@ -1,20 +1,20 @@
 #Performing an installation
-Rapid Install offers two options for a new installation: a standard installation, which involves creating a new system using system-specific configuration parameters, and an Express installation, where Rapid Install supplies default values for many parameters, requiring only a few to be supplied by the user carrying out the install.
+快速安装提供两种选择执行全新安装：标准安装(Standard Installation)和简易安装(Express Installation)。标准安装将会使用特定于系统的配置参数创建新的系统，简易安装只需用户进行很少的设置即可完成安装（系统会提供许多参数的默认值）。
 
-This chapter covers the following topics:
+本章包含以下内容:
 
-* [Standard Installation](#standard-installation)
-* [Express Installation](#)
+* [标准安装](#standard-installation)
+* [简易安装](#)
 * [What To Do Next](#)
 
 ##Standard Installation
 This section describes the setup steps for a standard installation, where the user supplies various system-specific parameters. An Express installation is described in [Setting Up an Express Installation](#).
 
-**Important**: Before you perform the steps described in this section, you must have created a stage area using the buildStage script, as described in the Set up the Stage Area section of Chapter 1.
+**重要**: 在开始执行本章节提供的安装步骤之前，你必须已经使用buildStage脚本创建好stage area。具体请参考第一章关于创建Stage Area相关的章节
 
 Follow the instructions in the section [Before You Begin](#) in [Getting Started](#). Then complete the following tasks, which are grouped into logical sections.
 
-**Important**: You do not carry out the installation steps on every node that will be part of your Oracle E-Business Suite system. You carry them out on the database node and primary Applications node, apply the latest release update packs, then use standard cloning commands to scale up to the required number of Applications nodes. The applicable cloning procedures are also mentioned in the relevant sections of this book.
+**重要**: 你不必在每个节点都执行这些安装步骤。你只需在数据库节点和主应用节点安装最新的程序包，然后使用标准的克隆命令将应用节点复制到所需的数目。克隆程序将会在本书的相关章节提及。
 
 ###Describe System Configuration
 1. **Start the Rapid Install wizard**
@@ -42,19 +42,22 @@ Follow the instructions in the section [Before You Begin](#) in [Getting Started
     ![ig_ch2_choosewizardop.gif](../../../public/imgs/ig_ch2_choosewizardop.gif)
     
     The available actions are as follows:
-    * Install Oracle E-Business Suite Release 12.2.0
+    
+  * Install Oracle E-Business Suite Release 12.2.0
 
-        This action sets up a new, fully configured system, with either a fresh database or a Vision Demo database. The configuration is derived from the system-specific configuration parameters you will enter in the Rapid Install wizard and save in the Oracle E-Business Suite database (conf_&lt;SID&gt;.txt file initially, until the database has been created).
-    * Express Configuration
+    This action sets up a new, fully configured system, with either a fresh database or a Vision Demo database. The configuration is derived from the system-specific configuration parameters you will enter in the Rapid Install wizard and save in the Oracle E-Business Suite database (conf_&lt;SID&gt;.txt file initially, until the database has been created).
+    
+  * Express Configuration
 
-        This install option sets up a fully configured, single-user system with either a fresh database or Vision Demo database. You supply a few basic parameters, such as database type and name, top-level install directory, and choice of port pools. The remaining directories and mount points are supplied by Rapid Install using default values.
+    This install option sets up a fully configured, single-user system with either a fresh database or Vision Demo database. You supply a few basic parameters, such as database type and name, top-level install directory, and choice of port pools. The remaining directories and mount points are supplied by Rapid Install using default values.
 
-        **Note**: The steps in [Setting Up an Express Installation](#) in this chapter describe this option.
-    * Upgrade to Oracle E-Business Suite Release 12.2.0
+    **Note**: The steps in [Setting Up an Express Installation](#) in this chapter describe this option.
+    
+  * Upgrade to Oracle E-Business Suite Release 12.2.0
 
-        Choose this option to indicate that you are upgrading your E-Business Suite products to the current version of Oracle E-Business Suite. The wizard screen flow presents two paths: one that lays down the file system and installs the new technology stack, and one that configures servers and starts services.
+    Choose this option to indicate that you are upgrading your E-Business Suite products to the current version of Oracle E-Business Suite. The wizard screen flow presents two paths: one that lays down the file system and installs the new technology stack, and one that configures servers and starts services.
 
-        **Note**: See [Performing an Upgrade](#) to learn how Rapid Install works during a system upgrade.
+    **Note**: See [Performing an Upgrade](#) to learn how Rapid Install works during a system upgrade.
 
     Using the following steps, you will set up a new installation. Choose Install Oracle E-Business Suite Release 12.2.0 and then click Next to continue.
 
