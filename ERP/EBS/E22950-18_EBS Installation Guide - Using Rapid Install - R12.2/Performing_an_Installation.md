@@ -45,11 +45,13 @@ Follow the instructions in the section [Before You Begin](#) in [Getting Started
     * Install Oracle E-Business Suite Release 12.2.0
 
         This action sets up a new, fully configured system, with either a fresh database or a Vision Demo database. The configuration is derived from the system-specific configuration parameters you will enter in the Rapid Install wizard and save in the Oracle E-Business Suite database (conf_&lt;SID&gt;.txt file initially, until the database has been created).
+        
     * Express Configuration
 
         This install option sets up a fully configured, single-user system with either a fresh database or Vision Demo database. You supply a few basic parameters, such as database type and name, top-level install directory, and choice of port pools. The remaining directories and mount points are supplied by Rapid Install using default values.
 
         **Note**: The steps in [Setting Up an Express Installation](#) in this chapter describe this option.
+        
     * Upgrade to Oracle E-Business Suite Release 12.2.0
 
         Choose this option to indicate that you are upgrading your E-Business Suite products to the current version of Oracle E-Business Suite. The wizard screen flow presents two paths: one that lays down the file system and installs the new technology stack, and one that configures servers and starts services.
