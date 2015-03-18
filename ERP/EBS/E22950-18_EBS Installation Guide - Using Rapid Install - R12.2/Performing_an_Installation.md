@@ -17,31 +17,29 @@ Follow the instructions in the section [Before You Begin](#) in [Getting Started
 **重要**: 你不必在每个节点都执行这些安装步骤。你只需在数据库节点和主应用节点安装最新的程序包，然后使用标准的克隆命令将应用节点复制到所需的数目。克隆程序将会在本书的相关章节提及。
 
 ###Describe System Configuration
-1. **Start the Rapid Install wizard**
+1. **启动安装向导**
 
-    Start the wizard from the command line by entering rapidwiz at the prompt. The Welcome screen lists the database and the technology stack components that are installed with Oracle E-Business Suite.
+    在命令行执行`rapidwiz`启动安装向导。欢迎界面会列出数据库和将要与EBS一起安装的组件，你可以展开组件列表，拖动滚动条来查看所有组件。
 
-    This screen lists the components that are included in, or supported by, this release of Oracle E-Business Suite. You can expand the component lists, using the scroll bar to bring all the components into view.
+    全新的安装包含一个纯净的Oracle 11gR2数据库。如果是升级安装，你可以选择创建一个不包含数据库的Oracle Home，然后使用它升级或者迁移当前在用的数据库至Oracle 11gR2。另外地，你可以选择一个合适的在用的Oracle Home。
 
-    A new installation includes a fresh Oracle 11g Release 2 (11gR2) database. In an upgrade, Rapid Install can optionally create an Oracle 11gR2 database Oracle Home without a database. You can use this Oracle Home to upgrade or migrate your existing database to Oracle 11gR2. Alternatively, you can choose to use a suitable existing Oracle Home.
-
-    **Note**: See Oracle E-Business Suite Upgrade Guide: Release 12.0 and 12.1 to Release 12.2.0.
+    **提示**: 参考 Oracle E-Business Suite Upgrade Guide: Release 12.0 and 12.1 to Release 12.2.0.
 
     **Welcome Screen**
 
     ![Rig49_Welcome.gif](../../../public/imgs/Rig49_Welcome.gif)
 
-    This screen is for information only. No decisions need to be made. When you have reviewed the information, click Next to continue.
+    该界面仅包含相关信息，您只需点击Next按钮进入下一步。
 
 2. **Select a wizard operation**
 
-    Use the Select Wizard Operation screen to indicate the action you want Rapid Install to perform. You begin both new installations and upgrades from this screen. Based on the action you choose, the Rapid Install wizard continues with the appropriate screen flow.
+    在该界面选择安装方式。无论是全新安装还是升级都会从本界面开始。您的选择将影响之后的安装步骤。
 
     **Select Wizard Operation - Install Oracle E-Business Suite Release 12.2.0**
 
     ![ig_ch2_choosewizardop.gif](../../../public/imgs/ig_ch2_choosewizardop.gif)
 
-    The available actions are as follows:
+    您可选择如下安装方式:
 
   * Install Oracle E-Business Suite Release 12.2.0
 
