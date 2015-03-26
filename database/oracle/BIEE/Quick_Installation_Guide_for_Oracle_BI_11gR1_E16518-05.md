@@ -7,6 +7,7 @@
 本文将介绍如何使用简易安装方式(Simple Install type)在单机环境中安装、配置、卸载Oracle BI。简易安装方式将以最少的步骤使用默认的设置来安装Oracle BI
 
 >**提示**
+>
 >简易安装方式适合单机单用户环境，可用于示范、评估或开发。使用简易安装方式安装的Oracle BI不能添加其它组件进行扩展，也不能使用配置助手对实例进行配置。
 
 ###安装内容
@@ -24,7 +25,8 @@ Oracle BI包含如下产品：
   * Oracle BI Publisher
   * Oracle BI Composer
 
-  >提示
+  >**提示**
+  >
   >虽然你可以下载和安装 Oracle BI Add-in for Microsoft Office，但Oracle建议使用Smart View来下载和安装。更多信息请参考《[Oracle Fusion Middleware User's Guide for Oracle Business Intelligence Enterprise Edition](https://docs.oracle.com/cd/E28280_01/bi.1111/e10544/toc.htm)》中的"[Downloading BI Desktop Tools](https://docs.oracle.com/cd/E28280_01/bi.1111/e10544/getstart.htm#BIEUG13062)"
 
 * Oracle BI Publisher
@@ -70,7 +72,8 @@ Oracle BI 11g安装向导会为你选择安装的产品创建所需的所有基�
 ###安装和配置数据库
 Oracle BI的安装需要可用的数据库。数据库不必与安装组件同一机器，但必须已经启动。数据库必须兼容RCU，RCU将会在数据库中创建Oracle BI所需的schemas
 
->提示
+>**提示** 
+>
 >RCU只在Linux和Windows操作系统上可用。
 
 最新的数据库兼容信息，请参考[Oracle Fusion Middleware Certification document](http://www.oracle.com/technetwork/middleware/ias/downloads/fusion-certification-100350.html)。在你安装好数据库后，需确保数据库按照[Repository Creation Utility Requirements](http://www.oracle.com/technetwork/middleware/ias/downloads/fusion-requirements-100147.html)章节所描述的系统需求和规范进行配置。
@@ -78,7 +81,8 @@ Oracle BI的安装需要可用的数据库。数据库不必与安装组件同�
 ###获取Repository Creation Utility(RCU)
 RCU有独立的安装光盘，你也可以从OTN下载ZIP格式的安装包，下载地址：[Repository Creation Utility](http://www.oracle.com/technetwork/middleware/bi-enterprise-edition/downloads/bus-intelligence-11g-165436.html)。下载.zip文件后，解压到你选择好的一个目录中，该目录将作为 RCU_HOME 目录
 
->提示
+>**提示** 
+>
 >在Windows系统中确保解压后的目录路径中没有空格。
 
 RCU仅支持32位Linux和windows平台。无论是Linux RCU还是Windows RCU都可用在任意兼容的数据库平台创建所需的schemas
@@ -92,10 +96,12 @@ RCU仅支持32位Linux和windows平台。无论是Linux RCU还是Windows RCU都�
 步骤二：根据你的操作系统类型执行安装程序
 
 * UNIX
+  
   ```bash
   ./rcu
   ```
 * Windows
+  
   ```bash
   rcu.bat
   ```
@@ -156,7 +162,8 @@ RCU仅支持32位Linux和windows平台。无论是Linux RCU还是Windows RCU都�
   
   点击 **Business Intelligence** 复选框，这样就自动选择了Oracle BI所需的Metadata Services(MDS)和所使用的schemas
   
-  >提示
+  >**提示** 
+  >
   >* 如果你的组织已经在数据库中拥有一个MDS schema，你就不必再创建一个，而可以用现有的。如果这样，那么在界面上取消Metadata Services schema选项，转而配置已有的MDS schema的相关信息
   >* 不要选中 Oracle AS Repository Componets复选框，因为它会创建许多Oracle BI不需要的schemas
   >* 记住schema名称和前缀，你将会在后续的安装中需要它们。后续用到的schema名称是由前缀和本界面的名称联结的字符串，格式为`prefix_schemaname`。例如，你使用默认的前缀 `DEV`，并将schema设为 `BIPLATFORM`，那么完整的schema名为 `DEV_BIPLATFORM`
@@ -169,7 +176,8 @@ RCU仅支持32位Linux和windows平台。无论是Linux RCU还是Windows RCU都�
   
   在密码输入框中输入密码，并在确认密码输入框中再次输入密码。
   
-  >提示
+  >**提示** 
+  >
   >记住schema的密码，你将在后续的安装中需要使用它
 
 * 表空间映射界面
@@ -196,7 +204,8 @@ Oracle BI 11g安装包以以下形式存在：
 
 如果是从网上下载的zip文件，那么请解压到你指定的目录中。该目录将作为 `bi_installer_loc`。
 
->提示
+>**提示** 
+>
 >在Windows系统中，请确保解压目录中不包含空格
 
 ##安装 Oracle BI
@@ -230,6 +239,7 @@ Oracle BI 11g安装包以以下形式存在：
 打开命令行窗口，执行以下基于你的操作系统的命令以打开安装程序：
 
 * UNIX
+  
   ```bash
   cd bi_installer_loc/Disk1
   ./runInstaller.sh
@@ -238,6 +248,7 @@ Oracle BI 11g安装包以以下形式存在：
   >不支持使用root用户来执行Oracle 11g安装程序
 
 * Windows
+  
   ```bash
   cd bi_installer_loc\Disk1
   setup.exe
@@ -275,7 +286,8 @@ Oracle BI 11g安装包以以下形式存在：
   
   如果忽略错误或警告信息，点击 **Continue** 以继续安装（不推荐）
   
-  >提示
+  >**提示** 
+  >
   >如果你未解决所有依赖错误或警告，安装可能出现异常
 
   依赖检查完成，且全部通过后，点击 **Next**
@@ -333,7 +345,8 @@ Oracle BI 11g安装包以以下形式存在：
 
   界面上显示安装进度，无需任何操作
   
-  >提示
+  >**提示** 
+  >
   >在安装过程中，会弹出WebLogic Server命令行窗口。请忽略它，因为它会自动关闭
   
   当安装完成时，点击 **Next** 
@@ -343,10 +356,13 @@ Oracle BI 11g安装包以以下形式存在：
   如果配置失败，界面上会显示错误信息，解决所有错误并点击 **Retry** （推荐）。所有的错误和警告信息都可以在安装日志文件中找到，安装日志存储在：
   
   * UNIX
+    
     ```
     USER_HOME/oraInventory/logs/
     ```
+    
   * Windows
+    
     ```
     C:\\Program Files\Oracle\Inventory\logs\
     ```
