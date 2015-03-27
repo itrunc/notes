@@ -54,7 +54,7 @@
 * 执行以下命令可确定物理内存大小
 
   ```bash
-  # grep MemTotal /proc/meminfo
+  grep MemTotal /proc/meminfo
   ```
 
   如果物理内存无法满足最小的内存需求，那么在继续安装之前，你需要为机器添加内存。
@@ -62,7 +62,7 @@
 * 执行以下命令可确定已分配的交换区(swap)大小
 
   ```bash
-  # grep SwapTotal /proc/meminfo
+  grep SwapTotal /proc/meminfo
   ```
 
   如果需要增加交换区，可参考操作系统相关的文档。
@@ -70,25 +70,25 @@
 * 执行以下命令可确定可用的临时目录(/tmp)大小
 
   ```bash
-  # df -h /tmp
+  df -h /tmp
   ```
 
 * 执行以下命令可确定磁盘空间大小
 
   ```bash
-  # df -h
+  df -h
   ```
 
 * 执行以下命令可确定空闲内存(RAM)和交换区(swap)大小
 
   ```bash
-  # free
+  free
   ```
 
 * 执行以下命令可确定系统架构信息
 
   ```bash
-  # uname -m
+  uname -m
   ```
   
   需验证处理器的架构。例如必须在以上命令的执行结果中包含 `x86_64` 。
