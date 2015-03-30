@@ -227,9 +227,9 @@ CREATE TABLE mytable (mycolumn INTEGER);
 * 如果执行成功则提交COMMIT，如果失败则执行ROLLBACK
 
 - - -
-文档：[Oracle Dababase SQL Tuning Guide 12c Release 1(12.1)](https://docs.oracle.com/database/121/TGSQL/toc.htm)
-编号：E49106-08
-章节：[第三章](https://docs.oracle.com/database/121/TGSQL/tgsql_sqlproc.htm#TGSQL175)
-日期：Decemeber 2014
-译者：大人一号
-翻译日期：2015年3月30日
+* **文档**：[Oracle Dababase SQL Tuning Guide 12c Release 1(12.1)](https://docs.oracle.com/database/121/TGSQL/toc.htm)
+* **编号**：E49106-08
+* **章节**：[第三章](https://docs.oracle.com/database/121/TGSQL/tgsql_sqlproc.htm#TGSQL175)
+* **日期**：Decemeber 2014
+* **译者**：大人一号
+* **翻译日期**：2015年3月30日
