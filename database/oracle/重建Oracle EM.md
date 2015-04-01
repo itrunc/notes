@@ -1,4 +1,5 @@
-```C:\Windows\System32>**emctl status dbconsole**
+```
+C:\Windows\System32>**emctl status dbconsole**
 Environment variable ORACLE_UNQNAME not defined. Please set ORACLE_UNQNAME to database unique name.
 
 C:\Windows\System32>**set ORACLE_UNQNAME=orcl**
