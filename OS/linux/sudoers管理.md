@@ -87,15 +87,16 @@ usermod -aG sudo itrunc
 然而像 CentOS这种允许用户自己设置root密码，并且使用root登陆的系统，并没有为sudoers做那么多的配置（默认只在sudoers配置文件中为root做了配置）。在这种情况下将普通用户设为sudoers有多种方法：
 
 * 方法一：使用命令 `su -` 切换到 root用户，并使用命令 `visudo` 进入编辑sudoers配置，并在其中添加一行 `username ALL=(ALL) ALL`
-* 方法二：按照ubuntu的方式进行配置，即在添加一个用户组sudo，并在sudoers中配置用户组sudo的相关权限：
+* 方法二：CentOS中默认使用wheel来组织sudo用户组，所以可将 `# %wheel ALL=(ALL) ALL` 一行前面的注释去掉，再使用 `usermod -aG wheel username` 命令将用户添加到wheel用户组中。除此之外，CentOS还需要在pam.d中打开wheel用户组的su权限：
   
     ```
-    su - #输入密码后切换到 root
-    groupadd sudo #创建用户组sudo
-    visudo #进入编辑sudoers，在其中添加一行：%sudo ALL=(ALL) ALL
-    usermod -aG sudo username #保存后将用户添加到用户组 sudo中即可
+    su - #切换到 root
+    vi /etc/pam.d/su #将其中 auth required pam_wheel.so use_uid 一行的注释去掉，保存
     ```
-
+    
+    >**提示**
+    >
+    >如果进行以上操作后仍不在sudoers列表中，重启一下就解决了。
 
 
 
