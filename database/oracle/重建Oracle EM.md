@@ -1,13 +1,13 @@
 ```
-C:\Windows\System32>**emctl status dbconsole**
+C:\Windows\System32>emctl status dbconsole
 Environment variable ORACLE_UNQNAME not defined. Please set ORACLE_UNQNAME to database unique name.
 
-C:\Windows\System32>**set ORACLE_UNQNAME=orcl**
+C:\Windows\System32>set ORACLE_UNQNAME=orcl
 
-C:\Windows\System32>**emctl status dbconsole**
+C:\Windows\System32>emctl status dbconsole
 OC4J Configuration issue. E:\app\Administrator\product\11.2.0\dbhome_1/oc4j/j2ee/OC4J_DBConsole_iss210002000579.isoftstone.com_orcl not found.
 
-C:\Windows\System32>**emca -deconfig dbcontrol db -repos drop**
+C:\Windows\System32>emca -deconfig dbcontrol db -repos drop
 
 EMCA 开始于 2015-4-1 15:02:51
 EM Configuration Assistant, 11.2.0.0.2 正式版
@@ -33,10 +33,10 @@ SYSMAN 用户的口令:【此处输入密码，回车】
 已成功完成 Enterprise Manager 的配置
 EMCA 结束于 2015-4-1 15:10:46
 
-C:\Windows\System32>**sc delete OracleDBConsoleorcl**
+C:\Windows\System32>sc delete OracleDBConsoleorcl
 [SC] DeleteService 成功
 
-C:\Windows\System32>**emca -config dbcontrol db -repos create**
+C:\Windows\System32>emca -config dbcontrol db -repos create
 
 EMCA 开始于 2015-4-1 15:27:41
 EM Configuration Assistant, 11.2.0.0.2 正式版
