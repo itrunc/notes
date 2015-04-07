@@ -157,13 +157,245 @@ OUI(Oracle Universal Installer)会执行系统检查以验证所需的程序包�
 
 ###支持Oracle Linux 7 和 Red Hat Enterprise Linux 7 的 x86-64 发行版
 ###支持Oracle Linux 6 和 Red Hat Enterprise Linux 6 的 x86-64 发行版
+
+参考以下信息来检查Oracle Linux 6和Red Hat Linux 6发行版：
+
+* SSH
+  
+  确保已安装OpenSSH。
+  
+* Oracle Linux 6
+  
+  在Unbreakable Linux Network上订阅Oracle Linux 6频道，或者配置Oracle公共yum为一个yum仓库，然后安装Oracle预装的RPM。RPM可安装所有Oracle基础组建所需的内核包，用于安装Oracle数据库，以及其他的系统配置。支持以下发行版：
+  
+  * Oracle Linux 6 with the Unbreakable Enterprise kernel: 2.6.39-200.24.1.el6uek.x86_64 及以上
+  * Oracle Linux 6 with the Red Hat Compatible kernel: 2.6.32-71.el6.x86_64 及以上
+	
+* Red Hat Enterprise Linux 6
+  
+  支持以下发行版：
+  
+  * Red Hat Enterprise Linux 6: 2.6.32-71.el6.x86_64 及以上
+  * Red Hat Enterprise Linux 6 with the Unbreakable Enterprise Kernel: 2.6.32-100.28.5.el6.x86_64及以上
+
+* Packages for Oracle Linux 6 and Red Hat Enterprise Linux 6
+  
+  必须已安装以下包（或更高版本）：
+  
+  ```
+  binutils-2.20.51.0.2-5.11.el6 (x86_64)
+  compat-libcap1-1.10-1 (x86_64)
+  compat-libstdc++-33-3.2.3-69.el6 (x86_64)
+  compat-libstdc++-33-3.2.3-69.el6 (i686)
+  gcc-4.4.4-13.el6 (x86_64)
+  gcc-c++-4.4.4-13.el6 (x86_64)
+  glibc-2.12-1.7.el6 (i686)
+  glibc-2.12-1.7.el6 (x86_64)
+  glibc-devel-2.12-1.7.el6 (x86_64)
+  glibc-devel-2.12-1.7.el6 (i686)
+  ksh
+  libgcc-4.4.4-13.el6 (i686)
+  libgcc-4.4.4-13.el6 (x86_64)
+  libstdc++-4.4.4-13.el6 (x86_64)
+  libstdc++-4.4.4-13.el6 (i686)
+  libstdc++-devel-4.4.4-13.el6 (x86_64)
+  libstdc++-devel-4.4.4-13.el6 (i686)
+  libaio-0.3.107-10.el6 (x86_64)
+  libaio-0.3.107-10.el6 (i686)
+  libaio-devel-0.3.107-10.el6 (x86_64)
+  libaio-devel-0.3.107-10.el6 (i686)
+  libXext-1.1 (x86_64)
+  libXext-1.1 (i686)
+  libXtst-1.0.99.2 (x86_64)
+  libXtst-1.0.99.2 (i686)
+  libX11-1.3 (x86_64)
+  libX11-1.3 (i686)
+  libXau-1.0.5 (x86_64)
+  libXau-1.0.5 (i686)
+  libxcb-1.5 (x86_64)
+  libxcb-1.5 (i686)
+  libXi-1.3 (x86_64)
+  libXi-1.3 (i686)
+  make-3.81-19.el6
+  sysstat-9.0.4-11.el6 (x86_64)
+  ```
+
 ###支持Oracle Linux 5 和 Red Hat Enterprise Linux 5 的 x86-64 发行版
 ###支持SUSE的 x86-64 发行版
 
-##Linux所需的其他驱动和软件包
-##检查所需的软件需求
+##Linux额外所需的其他驱动和软件包
+
+以下驱动和程序包并非必须安装，但你可以选择性地按如下指引进行安装。
+
+###Open Database Connectivity的安装
+###Linux上PAM的安装
+###Oracle Messaging Gateway的安装
+###Lightweight Directory Access Protocol的安装
+###Linux开发环境的安装
+
+确保你的系统按照如下开发环境需求进行配置：
+
+* Java Database Connectivity
+  
+  Oracle Java Database Connectivity需要包含JNDI扩展的JDK 6（1.6.0_37，或1.6的更高更新版）
+  
+* Oracle Call Interface(OCI)
+  
+  OCI需要包含JNDI扩展的JDK 6（1.6.0_37，或1.6的更高更新版）
+  
+* Oracle C++ / Oracle C++ Call Interface / Pro*C/C++ / Oracle XML Developer's Kit(XDK)
+  
+  此处省略
+  
+* Pro*COBOL
+  
+  Micro Focus Server Express 5.1
+
+###Web浏览器的安装
+
+##检查所需的软件
+
+可按照以下步骤检查系统是否已满足软件需求
+
+1. 断定Linux的发行版
+  
+  ```bash
+  cat /etc/oracle-release
+  cat /etc/redhat-release
+  lsb_release -id
+  ```
+  
+2. 断定内核是否所需的版本
+  
+  ```bash
+  uname -r
+  ```
+  
+  Oracle Linux 6将显示：
+  
+  ```
+  2.6.39-100.7.1.el6uek.x86_64
+  ```
+  
+  Review the required errata level for your distribution. If the errata level is previous to the required minimum errata update, then obtain and install the latest kernel update from your Linux distributor.
+
+3. 断定是否已经安装了所需的软件包：
+  
+  ```bash
+  rpm -q package_name
+  ```
+  
+  如果你还想了解特殊的系统结构信息，使用如下命令：
+  
+  ```bash
+  rpm -qa --queryformat "%{NAME}-%{VERSION}-%{RELEASE} (%{ARCH})\n" | grep package_name
+  ```
+  
+  你也可以一次性检查多个程序包：
+  
+  ```bash
+  rpm -q binutils compat-libstdc++ gcc glibc libaio libgcc libstdc++ make sysstat unixodbc
+  ```
+  
+  如果所需的程序未安装，则请从Linux光盘或者网上安装所依赖的程序包。
+
 ##创建所需的系统用户组和用户
+
+安装oracle需要以下用户组和用户
+
+* The Oracle Inventory group (如，oinstall)
+* The OSDBA group (如，dba)
+* The Oracle软件所有者 (如，oracle)
+* The OSOPER group (可选的，如，oper)
+
+###检查oinstall组是否已存在
+
+```bash
+more /etc/oraInst.loc
+```
+
+如果以上显示oinstall组名，则用户组已经存在。如果oraInst.loc文件存在，则它的内容如下：
+
+```
+inventory_loc=/u01/app/oraInventory
+inst_group=oinstall
+```
+
+###检查dba组是否存在
+
+```bash
+grep dba /etc/group
+```
+
+如果以上命令输出中显示dba组名，则存在。
+
+###如果有需要，输入一下命令创建oinstall和dba组
+
+```bash
+/usr/sbin/groupadd oinstall
+/usr/sbin/groupadd dba
+```
+
+###检查oracle用户是否存在，并且属于正确的用户组
+
+```bash
+id oracle
+```
+
+如果用户oracle存在，以上命令会显示它所属的用户组的信息。命令的输入与以下内容类似：
+
+```
+uid=440(oracle) gid=200(oinstall) groups=201(dba),202(oper)
+```
+
+###如果有需要，修改用户oracle
+
+* 如果oracle用户已存在，但它的主要用户组不是oinstall，或者它不是dba组成员
+  
+  ```bash
+  /usr/sbin/usermod -g oinstall -G dba oracle
+  ```
+  
+* 如果oracle用户不存在
+  
+  ```bash
+  /usr/sbin/useradd -g oinstall -G dba oracle
+  ```
+  
+  以上命令会创建oracle用户，并且它的主要用户组为oinstall，它还属于dba组。
+
+###使用以下命令设置oralce用户的密码
+
+```bash
+passwd oracle
+```
+
 ##配置内核参数与资源限制
+
+验证下表中的内核参数数值比表中的提供的最小值大。以下仅提供最小值，Oracle建议在生产环境中需调整这些参数值以优化系统性能。
+
+参数 | 最小值 | 文件
+------ | ------ | ------
+semmsl | 250 | /proc/sys/kernel/sem
+semmns | 32000 | 同上
+semopm | 100 | 同上
+semmni | 128 | 同上
+shmall | 40%的物理内存（按页）。如果oracle软件支持多个数据库或者使用一个大SGA，那么该值需设为总数 | /proc/sys/kernel/shmall
+shmmax | 物理内存的一半（按字节） | /proc/sys/kernel/shmmax
+shmmni | 4096 | /proc/sys/kernel/shmmni
+panic_on_oops | 1 | /proc/sys/kernel/panic_on_oops
+file-max | 6815744 | /proc/sys/fs/file-max
+ip_local_port_range | 最小9000，最大65500 | /proc/sys/net/ipv4/ip_local_port/range
+rmem_default | 262144 | /proc/sys/net/core/rmem_default
+rmem_max | 4194304 | /proc/sys/net/core/rmem_max
+wmem_default | 262144 | /proc/sys/net/core/wmem_default
+wmem_max | 1048576 | /proc/sys/net/core/wmem_max
+aio-max-nr | 1048576，该参数限制并发，需设为某个值以避免I/O失败 | /proc/sys/fs/aio-max-nr
+
+>**提示**
+>
+>如果这些参数的当前值比以上建议的最小值大，那么无需修改
+
 ##创建所需的目录
 ##配置Oracle软件所属的环境变量
 ##挂载产品光盘
