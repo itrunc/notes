@@ -10,7 +10,7 @@
 * 主机名：oracle12cR1.itrunc.com
 * IP地址：192.168.100.99
 
-##配置网络环境(以root用户登录)
+##配置网络环境(以root用户登录，或者登录用户为sudoers)
 
 使用静态IP，设置主机名。参考另一篇笔记：《[CentOS静态网络配置.md](../../OS/linux/centos/CentOS静态网络配置.md)》
 
@@ -128,46 +128,14 @@ package libstdc++-devel is not installed
 package libaio-devel is not installed
 ```
 
-安装未安装的软件包：
+安装以上未安装的软件包：
 
 ```bash
 sudo yum --disablerepo=\* --enablerepo=c6-media install compat-libcap1 compat-libstdc++ gcc gcc-c++ glibc-devel ksh libstdc++-devel libaio-devel
 ```
 
 ```
-Loaded plugins: fastestmirror, refresh-packagekit, security
-Loading mirror speeds from cached hostfile
-c6-media                                                                                                                                 | 4.0 kB     00:00 ... 
-c6-media/primary_db                                                                                                                      | 4.4 MB     00:00 ... 
-Setting up Install Process
-No package compat-libstdc++ available.
-Resolving Dependencies
---> Running transaction check
----> Package compat-libcap1.x86_64 0:1.10-1 will be installed
----> Package gcc.x86_64 0:4.4.7-3.el6 will be installed
---> Processing Dependency: cpp = 4.4.7-3.el6 for package: gcc-4.4.7-3.el6.x86_64
---> Processing Dependency: cloog-ppl >= 0.15 for package: gcc-4.4.7-3.el6.x86_64
----> Package gcc-c++.x86_64 0:4.4.7-3.el6 will be installed
---> Processing Dependency: libmpfr.so.1()(64bit) for package: gcc-c++-4.4.7-3.el6.x86_64
----> Package glibc-devel.x86_64 0:2.12-1.107.el6 will be installed
---> Processing Dependency: glibc-headers = 2.12-1.107.el6 for package: glibc-devel-2.12-1.107.el6.x86_64
---> Processing Dependency: glibc-headers for package: glibc-devel-2.12-1.107.el6.x86_64
----> Package ksh.x86_64 0:20100621-19.el6 will be installed
----> Package libaio-devel.x86_64 0:0.3.107-10.el6 will be installed
----> Package libstdc++-devel.x86_64 0:4.4.7-3.el6 will be installed
---> Running transaction check
----> Package cloog-ppl.x86_64 0:0.15.7-1.2.el6 will be installed
---> Processing Dependency: libppl_c.so.2()(64bit) for package: cloog-ppl-0.15.7-1.2.el6.x86_64
---> Processing Dependency: libppl.so.7()(64bit) for package: cloog-ppl-0.15.7-1.2.el6.x86_64
----> Package cpp.x86_64 0:4.4.7-3.el6 will be installed
----> Package glibc-headers.x86_64 0:2.12-1.107.el6 will be installed
---> Processing Dependency: kernel-headers >= 2.2.1 for package: glibc-headers-2.12-1.107.el6.x86_64
---> Processing Dependency: kernel-headers for package: glibc-headers-2.12-1.107.el6.x86_64
----> Package mpfr.x86_64 0:2.4.1-6.el6 will be installed
---> Running transaction check
----> Package kernel-headers.x86_64 0:2.6.32-358.el6 will be installed
----> Package ppl.x86_64 0:0.10.2-11.el6 will be installed
---> Finished Dependency Resolution
+(此处省略)
 
 Dependencies Resolved
 
@@ -201,7 +169,10 @@ Is this ok [y/N]: y
 
 完成以上安装后，除了compat-libstdc++包之外，64位的依赖包就都安装了，可使用上文的检查命令进行检查。
 
-未装上的软件包的正确名称为：compat-libstdc++-33，必须把它装上：
+>**纠错**
+>正确的报名是compat-libstdc++-33
+
+安装compat-libstdc++-33
 
 ```bash
 sudo yum --disablerepo=\* --enablerepo=c6-media -y install compat-libstdc++-33
@@ -245,12 +216,12 @@ CentOS6.4安装光盘中的unixODBC的版本为2.2.14，而oracle要求2.3.1或�
 
 安装略，且看是否有关系。
 
-##创建相关的用户和用户组（root用户登录）
+##创建相关的用户和用户组
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo vi /etc/oraInst.loc
+[ben@oracle12cR1 ~]$ sudo vi /etc/oraInst.loc
 [sudo] password for ben: 
-[ben@oracle12cR1 yum.repos.d]$ ll /etc | grep ora
+[ben@oracle12cR1 ~]$ ll /etc | grep ora
 -rw-r--r--.  1 root root     56 4月   8 16:53 oraInst.loc
 ```
 
@@ -264,43 +235,47 @@ inst_group=oinstall
 检查dba组和oinstall组是否存在，若不存在则添加
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ grep dba /etc/group
-[ben@oracle12cR1 yum.repos.d]$ grep oinstall /etc/group
-[ben@oracle12cR1 yum.repos.d]$ sudo groupadd dba
-[ben@oracle12cR1 yum.repos.d]$ sudo groupadd oinstall
-[ben@oracle12cR1 yum.repos.d]$ grep dba /etc/group
+[ben@oracle12cR1 ~]$ grep dba /etc/group
+[ben@oracle12cR1 ~]$ grep oinstall /etc/group
+[ben@oracle12cR1 ~]$ grep oper /etc/group
+[ben@oracle12cR1 ~]$ sudo groupadd dba
+[ben@oracle12cR1 ~]$ sudo groupadd oinstall
+[ben@oracle12cR1 ~]$ sudo groupadd oper
+[ben@oracle12cR1 ~]$ grep dba /etc/group
 dba:x:501:
-[ben@oracle12cR1 yum.repos.d]$ grep oinstall /etc/group
+[ben@oracle12cR1 ~]$ grep oinstall /etc/group
 oinstall:x:502:
+[ben@oracle12cR1 ~]$ grep oper /etc/group
+oper:x:503:
 ```
 
 检查oracle用户是否存在，如果不存在则添加，并设置密码。
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ id oracle
+[ben@oracle12cR1 ~]$ id oracle
 id: oracle：无此用户
-[ben@oracle12cR1 yum.repos.d]$ sudo useradd -g oinstall -G dba oracle
-[ben@oracle12cR1 yum.repos.d]$ sudo passwd oracle
+[ben@oracle12cR1 ~]$ sudo useradd -g oinstall -G dba,oper oracle
+[ben@oracle12cR1 ~]$ sudo passwd oracle
 更改用户 oracle 的密码 。
 新的 密码：
 无效的密码： 过于简单化/系统化
 重新输入新的 密码：
 passwd： 所有的身份验证令牌已经成功更新。
-[ben@oracle12cR1 yum.repos.d]$ id oracle
-uid=501(oracle) gid=502(oinstall) 组=502(oinstall),501(dba)
+[ben@oracle12cR1 ~]$ id oracle
+uid=501(oracle) gid=502(oinstall) 组=502(oinstall),501(dba),503(oper)
 ```
 
-##修改内核参数
+##检查并修改内核参数
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep sem
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep sem
 kernel.sem = 250	32000	32	128
 ```
 
 以上数值分别对应semmsl, semmns, semopm, semmni，要求250,32000,100,128，只有semopm未达到最小值100
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep shm
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep shm
 kernel.shmmax = 68719476736
 kernel.shmall = 4294967296
 kernel.shmmni = 4096
@@ -311,20 +286,20 @@ vm.hugetlb_shm_group = 0
 以上显示shmmax,shmall,shmmni均达到需求的最小值：536870912,2097152,4096
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep ip_local_port_range
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep ip_local_port_range
 net.ipv4.ip_local_port_range = 32768	61000
 ```
 
 以上显示ip_local_port_range范围不满足要求的最小范围，应改为9000,65500
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep rmem_default
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep rmem_default
 net.core.rmem_default = 229376
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep rmem_max
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep rmem_max
 net.core.rmem_max = 229376
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep wmem_default
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep wmem_default
 net.core.wmem_default = 229376
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep wmem_max
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep wmem_max
 net.core.wmem_max = 229376
 ```
 
@@ -338,16 +313,16 @@ net.core.wmem_max = 1048586
 ```
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep panic_on_oops
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep panic_on_oops
 kernel.panic_on_oops = 1
 ```
 
 以上显示，panic_on_oops参数满足需求。
 
 ```
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep file-max
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep file-max
 fs.file-max = 187706
-[ben@oracle12cR1 yum.repos.d]$ sudo sysctl -a | grep aio-max-nr
+[ben@oracle12cR1 ~]$ sudo sysctl -a | grep aio-max-nr
 fs.aio-max-nr = 65536
 ```
 
@@ -386,3 +361,273 @@ reboot
 ```
 
 ##检查和修改oracle用户的资源限制
+
+切换到oracle用户检查资源限制
+
+```
+[ben@oracle12cR1 ~]$ su - oracle
+密码：
+[oracle@oracle12cR1 ~]$ ulimit -Sn
+1024
+[oracle@oracle12cR1 ~]$ ulimit -Hn
+4096
+[oracle@oracle12cR1 ~]$ ulimit -Su
+1024
+[oracle@oracle12cR1 ~]$ ulimit -Hu
+14810
+[oracle@oracle12cR1 ~]$ ulimit -Ss
+10240
+[oracle@oracle12cR1 ~]$ ulimit -Hs
+unlimited
+[oracle@oracle12cR1 ~]$ ulimit -Sl
+64
+[oracle@oracle12cR1 ~]$ ulimit -Hl
+64
+[oracle@oracle12cR1 ~]$ exit
+logout
+```
+
+以上翻译成配置文件/etc/security/limits.conf中的格式
+
+```
+oracle soft nofile 1024 #期望1024，一般设为4096
+oracle hard nofile 4096 #期望65535
+oracle soft nproc 1024  #期望2047
+oracle hard nproc 14810 #期望16384
+oracle soft stack 10240 #期望10240
+oracle hard stack unlimited #期望32768
+oracle soft memlock 64  #期望启动HugePages时为90%物理内存，禁用时3145728
+oracle hard memlock 64  #期望启动HugePages时为90%物理内存，禁用时3145728
+```
+
+调整后的结果：
+
+```
+oracle soft nofile 4096
+oracle hard nofile 65535
+oracle soft nproc 2047
+oracle hard nproc 16384
+oracle soft stack 10240
+oracle hard stack 32768
+oracle soft memlock 3145728
+oracle hard memlock 3145728
+```
+
+将以上内容追加到文件/etc/security/limits.conf中：
+
+```
+[ben@oracle12cR1 ~]$ sudo vi /etc/security/limits.conf
+```
+
+##创建所需的目录
+
+```
+[ben@oracle12cR1 ~]$ sudo mkdir -p /u01/app/
+[ben@oracle12cR1 ~]$ sudo chown -R oracle:oinstall /u01/app/
+[ben@oracle12cR1 ~]$ sudo chmod -R 775 /u01/app/
+[ben@oracle12cR1 ~]$ ll /u01
+总用量 4
+drwxrwxr-x. 2 oracle oinstall 4096 4月   9 10:16 app
+```
+
+##用户环境变量设置（以oracle身份登录系统）
+
+编辑文件 /home/oracle/.bash_profile
+
+```
+[oracle@oracle12cR1 ~]$ vi /home/oracle/.bash_profile
+```
+
+向文件内容追加以下内容：
+
+```
+ORACLE_BASE=/u01/app
+ORACLE_HOME=$ORACLE_BASE/12cR1
+ORACLE_SID=orcl
+LD_LIBRARY_PATH=$ORACLE_HOME/lib
+PATH=$PATH:$ORACLE_HOME/bin
+export ORACLE_BASE ORACLE_HOME ORACLE_SID LD_LIBRARY_PATH PATH
+```
+
+保存后，执行命令：
+
+```
+source /home/oracle/.bash_profile
+```
+
+##插入光盘，开始安装（当前登录用户为oracle）
+
+插入光盘，切换到安装文件所在的目录：
+
+```
+[oracle@oracle12cR1 database]$ pwd
+/media/OracleDB12cR1_Li/database
+[oracle@oracle12cR1 database]$ ll
+总用量 19
+dr-x------. 1 oracle oinstall 2048 4月   9 10:29 install
+dr-x------. 1 oracle oinstall 2048 4月   9 10:29 response
+dr-x------. 1 oracle oinstall 2048 4月   9 10:29 rpm
+-r--------. 1 oracle oinstall 7808 5月  24 2013 runInstaller
+dr-x------. 1 oracle oinstall 2048 4月   9 10:29 sshsetup
+dr-x------. 1 oracle oinstall 2048 4月   9 10:29 stage
+-r--------. 1 oracle oinstall  500 6月   9 2013 welcome.html
+```
+
+runInstaller没有可执行权限。将整个database文件夹拷贝到主目录中：
+
+```
+[oracle@oracle12cR1 OracleDB12cR1_Li]$ pwd
+/media/OracleDB12cR1_Li
+[oracle@oracle12cR1 OracleDB12cR1_Li]$ ll
+total 2
+dr-x------. 1 oracle oinstall 2048 Apr  9 10:29 database
+[oracle@oracle12cR1 OracleDB12cR1_Li]$ cp -R database ~/
+[oracle@oracle12cR1 OracleDB12cR1_Li]$ ll ~/database
+total 32
+dr-x------.  4 oracle oinstall 4096 Apr  9 10:58 install
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 response
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 rpm
+-r--------.  1 oracle oinstall 7808 Apr  9 10:58 runInstaller
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 sshsetup
+dr-x------. 14 oracle oinstall 4096 Apr  9 11:00 stage
+-r--------.  1 oracle oinstall  500 Apr  9 11:00 welcome.html
+[oracle@oracle12cR1 OracleDB12cR1_Li]$ cd ~/database
+[oracle@oracle12cR1 database]$ pwd
+/home/oracle/database
+```
+
+切换到root用户，并将runInstaller改成可执行：
+
+```
+[oracle@oracle12cR1 database]$ su -
+Password: 
+[root@oracle12cR1 ~]# chmod 500 /home/oracle/database/runInstaller
+[root@oracle12cR1 ~]# exit
+logout
+[oracle@oracle12cR1 database]$ ll
+total 32
+dr-x------.  4 oracle oinstall 4096 Apr  9 10:58 install
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 response
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 rpm
+-r-x------.  1 oracle oinstall 7808 Apr  9 10:58 runInstaller
+dr-x------.  2 oracle oinstall 4096 Apr  9 10:58 sshsetup
+dr-x------. 14 oracle oinstall 4096 Apr  9 11:00 stage
+-r--------.  1 oracle oinstall  500 Apr  9 11:00 welcome.html
+```
+
+执行安装向导：
+
+```
+[oracle@oracle12cR1 database]$ /home/oracle/database/runInstaller
+/home/oracle/database/runInstaller: line 240: /home/oracle/database/install/.oui: Permission denied
+```
+
+/home/oracle/database/install/.oui没有执行权限。。。
+
+切换到root，为/home/oracle/database/install/目录下的所有文件都添加执行权限(不安全，安装完成后，把安装包删掉)：
+
+```
+[oracle@oracle12cR1 install]$ su -
+Password: 
+[root@oracle12cR1 ~]# chmod +x /home/oracle/database/install/*
+[root@oracle12cR1 ~]# chmod +x /home/oracle/database/install/.oui
+[root@oracle12cR1 ~]# ll /home/oracle/database/install/
+总用量 256
+-r-x--x--x. 1 oracle oinstall     28 4月   9 10:58 addLangs.sh
+-r-x--x--x. 1 oracle oinstall    275 4月   9 10:58 attachHome.sh
+-r-x--x--x. 1 oracle oinstall   7499 4月   9 10:58 clusterparam.ini
+-r-x--x--x. 1 oracle oinstall    181 4月   9 10:58 detachHome.sh
+dr-x--x--x. 2 oracle oinstall   4096 4月   9 10:58 images
+-r-x--x--x. 1 oracle oinstall  64797 4月   9 10:58 lsnodes
+-r-x--x--x. 1 oracle oinstall   2111 4月   9 10:58 oraparam.ini
+-r-x--x--x. 1 oracle oinstall   2096 4月   9 10:58 oraparam.ini.deinstall
+-r-x--x--x. 1 oracle oinstall   6437 4月   9 10:58 oraparamsilent.ini
+dr-x--x--x. 2 oracle oinstall   4096 4月   9 10:58 resource
+-r-x--x--x. 1 oracle oinstall    107 4月   9 10:58 runInstaller.sh
+-r-x--x--x. 1 oracle oinstall 145976 4月   9 10:58 unzip
+[root@oracle12cR1 ~]# exit
+```
+
+再次执行安装：
+
+```
+[oracle@oracle12cR1 database]$ /home/oracle/database/runInstaller
+```
+
+很不幸，再次出错了。
+
+![PRVF-0002:Could not retrieve local nodename](../../public/imgs/oracle_db_12c_r1_inst/PRVF-0002.jpg)
+
+原因是/etc/hosts文件中未添加主机名，解决方法如下：
+
+```
+[oracle@oracle12cR1 install]$ hostname
+oracle12cR1.itrunc.com
+[oracle@oracle12cR1 install]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+[oracle@oracle12cR1 install]$ su -
+Password: 
+[root@oracle12cR1 ~]# vi /etc/hosts
+[root@oracle12cR1 ~]# exit
+logout
+[oracle@oracle12cR1 install]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+127.0.0.1   oracle12cR1.itrunc.com
+```
+
+##再次启程安装
+
+```
+[oracle@oracle12cR1 ~]$ export LANG=en_US
+[oracle@oracle12cR1 database]$ /home/oracle/database/runInstaller
+Starting Oracle Universal Installer...
+
+Checking Temp space: must be greater than 500 MB.   Actual 276776 MB    Passed
+Checking swap space: must be greater than 150 MB.   Actual 4095 MB    Passed
+Checking monitor: must be configured to display at least 256 colors.    Actual 16777216    Passed
+Preparing to launch Oracle Universal Installer from /tmp/OraInstall2015-04-09_12-50-46PM. Please wait ...
+```
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_1_of_10_01.jpg)
+
+去掉接受安全更新的选项，点击Next
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_1_of_10_02.jpg)
+
+点击Yes
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_2_of_10_01.jpg)
+
+点击Next
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_2_of_10_02.jpg)
+
+点击Details，看一下是什么没有满足要求
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_2_of_10_03.jpg)
+
+继续，点击Yes
+
+![Installing database - Step 1 of 10](../../public/imgs/oracle_db_12c_r1_inst/step_2_of_10_04.jpg)
+
+Details内容如下：
+
+```
+Cause - Failed to access the temporary location.  
+Action - Ensure that the current user has required permissions to access the temporary location.  
+Additional Information:
+ - Framework setup check failed on all the nodes  
+ - Cause: Cause Of Problem Not Available  
+ - Action: User Action Not Available 
+Summary of the failed nodes 
+oracle12cR1  
+ - Version of exectask could not be retrieved from node "oracle12cR1"  
+ - Cause: Cause Of Problem Not Available  
+ - Action: User Action Not Available 
+```
+
+关闭 SELinux，问题未能解决
+
+关闭防火墙，问题未能解决
