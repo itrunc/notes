@@ -50,3 +50,9 @@ panben@ubuntu:~$ npm -v
 2.7.4
 ```
 
+做一下链接
+
+```
+sudo ln -s /opt/nodejs/bin/node /usr/bin/node
+sudo ln -s /opt/nodejs/bin/npm /usr/bin/npm
+```
