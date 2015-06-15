@@ -1,10 +1,15 @@
 以下这些值被当作false:
 
 *. false
+
 *. null
+
 *. undefined
+
 *. '' //空字符串
+
 *. 0
+
 *. NaN
 
 除此之外，都会被当作true。
