@@ -111,8 +111,9 @@ content内的数字代表时间（秒），既多少时间后刷新。如果加u
 ```html
 <meta name="apple-mobile-web-app-title" content="标题">
 ```
-
+![](imgs/1004.jpeg)
 ![](imgs/1002.jpeg)
+![](imgs/1005.jpeg)
 
 
 ### 忽略数字自动识别为电话号码
