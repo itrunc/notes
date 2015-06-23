@@ -110,31 +110,31 @@ html5 之前网页中会这样写：
 
 ## SEO 优化部分
 
-### 页面标题&lt;title&gt;标签(head 头部必须)
+页面标题&lt;title&gt;标签(head 头部必须)
 
 ```html
 <title>your title</title>
 ```
 
-### 页面关键词 keywords
+页面关键词 keywords
 
 ```html
 <meta name="keywords" content="your keywords">
 ```
 
-### 页面描述内容 description
+页面描述内容 description
 
 ```html
 <meta name="description" content="your description">
 ```
 
-### 定义网页作者 author
+定义网页作者 author
 
 ```html
 <meta name="author" content="author,email address">
 ```
 
-### 定义网页搜索引擎索引方式，robotterms 是一组使用英文逗号「,」分割的值，通常有如下几种取值：none，noindex，nofollow，all，index和follow。
+定义网页搜索引擎索引方式，robotterms 是一组使用英文逗号「,」分割的值，通常有如下几种取值：none，noindex，nofollow，all，index和follow。
 
 ```html
 <meta name="robots" content="index,follow">
