@@ -2,7 +2,7 @@
 该函数提供了从一个数据行窗口的第N行中获取值的能力
 
 ## 语法
-![NTH_VALUE函数语法](../../../public/imgs/nth_value.gif)
+![NTH_VALUE函数语法](img/nth_value.gif)
 
 ##描述
 NTH_VALUE用于获取由analytic_clause定义的数据行窗口中第N行的measure_expr的值，返回值与measure_expr同类型。

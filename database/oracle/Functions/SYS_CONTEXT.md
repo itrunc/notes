@@ -2,7 +2,7 @@
 
 ##语法
 
-![sys_context函数语法](../../../public/imgs/sys_context.gif)
+![sys_context函数语法](img/sys_context.gif)
 
 ##描述
 

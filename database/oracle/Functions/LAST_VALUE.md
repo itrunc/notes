@@ -2,7 +2,7 @@
 该函数提供了从一个数据行窗口最后一行中获取值的能力
 
 ## 语法
-![LAST_VALUE函数语法](../../../public/imgs/last_value.gif)
+![LAST_VALUE函数语法](img/last_value.gif)
 
 ##描述
 LAST_VALUE是一个分析函数，它返回一个数据行窗口中最后一行的相关值。

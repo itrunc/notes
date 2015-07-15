@@ -4,11 +4,11 @@
 ## 语法
 * **聚合函数语法** **
 
-    ![DENSE_RANK聚合函数语法](../../../public/imgs/dense_rank_aggregate.gif)
+    ![DENSE_RANK聚合函数语法](img/dense_rank_aggregate.gif)
 
 * **分析函数语法**
 
-    ![DENSE_RANK分析函数语法](../../../public/imgs/dense_rank_analytic.gif)
+    ![DENSE_RANK分析函数语法](img/dense_rank_analytic.gif)
 
 ##描述
 函数功能可参考 [RANK函数](RANK.md)

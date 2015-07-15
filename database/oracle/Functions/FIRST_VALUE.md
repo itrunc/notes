@@ -2,7 +2,7 @@
 该函数提供了从一个数据行窗口中第一行获取值的能力
 
 ## 语法
-![FIRST_VALUE函数语法](../../../public/imgs/first_value.gif)
+![FIRST_VALUE函数语法](img/first_value.gif)
 
 ##描述
 FIRST_VALUE是一个分析函数，它返回一个数据行窗口中第一行的相关值。

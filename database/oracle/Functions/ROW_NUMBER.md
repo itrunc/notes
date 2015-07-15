@@ -3,7 +3,7 @@
 
 ## 语法
 
-![ROW_NUMBER函数](../../../public/imgs/row_number.gif)
+![ROW_NUMBER函数](img/row_number.gif)
 
 
 ##描述

@@ -4,11 +4,11 @@
 ## 语法
 * **聚合函数语法**
 
-    ![RANK聚合函数语法](../../../public/imgs/rank_aggregate.gif)
+    ![RANK聚合函数语法](img/rank_aggregate.gif)
 
 * **分析函数语法**
 
-    ![RANK分析函数语法](../../../public/imgs/rank_analytic.gif)
+    ![RANK分析函数语法](img/rank_analytic.gif)
 
 ##描述
 RANK函数用于计算一组数值中某个值的排名。返回值类型为NUMBER。
