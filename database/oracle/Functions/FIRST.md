@@ -9,17 +9,18 @@
 
 **FIRST** 和 **LAST** 非常相似，两者都可作为聚合函数和分析函数。它们分别用于计算已排序值中的第一个和最后一个值，这些排序值来自于数据行。如果数据只有一行，用于FIRST或LAST计算的值集合中只有一个元素。
 
-If you omit the OVER clause, then the FIRST and LAST functions are treated as aggregate functions. You can use these functions as analytic functions by specifying the OVER clause. The query_partition_clause is the only part of the OVER clause valid with these functions. If you include the OVER clause but omit the query_partition_clause, then the function is treated as an analytic function, but the window defined for analysis is the entire table.
 
-These functions take as an argument any numeric data type or any nonnumeric data type that can be implicitly converted to a numeric data type. The function returns the same data type as the numeric data type of the argument.
+如果OVER子句被省略，则FIRST和LAST作为聚合函数。作为分析函数时，OVER子句必须定义。PARTITION子句是OVER子句中唯一有效的部分，如果被省略，那么整张表会被当作分析窗口。
 
-When you need a value from the first or last row of a sorted group, but the needed value is not the sort key, the FIRST and LAST functions eliminate the need for self-joins or views and enable better performance.
+参数类型为数值类型，或者可隐式转换为数值的非数值类型。返回值类型与参数类型一致。
 
-* The aggregate_function argument is any one of the MIN, MAX, SUM, AVG, COUNT, VARIANCE, or STDDEV functions. It operates on values from the rows that rank either FIRST or LAST. If only one row ranks as FIRST or LAST, then the aggregate operates on a singleton (nonaggregate) set.
+当你需要从已排序的group中获取第一行(first row)或最后一行(last row)的值，而该值并非用于排序的字段。使用FIRST和LAST函数可避免使用自连接或视图，并且可提高性能。
 
-* The KEEP keyword is for semantic clarity. It qualifies aggregate_function, indicating that only the FIRST or LAST values of aggregate_function will be returned.
+* aggregate_function 可以是MIN, MAX, SUM, AVG, COUNT, VARIANCE, STDDEV函数中的任何一个， 它将对排名为FIRST或LAST的结果集进行计算。如果排名为FIRST或LAST的结果集只有一行，那么聚合计算将基于单元素的结果集。
 
-* DENSE_RANK FIRST or DENSE_RANK LAST indicates that Oracle Database will aggregate over only those rows with the minimum (FIRST) or the maximum (LAST) dense rank (also called olympic rank).
+* KEEP关键字是语法声明。用于向 aggregate_function 声明只有FIRST或LAST的结果集会被返回。
+
+* DENSE_RANK FIRST 或 DENSE_RANK LAST声明数据库会对排名最小（FIRST)或排名最大（LAST）的行进行聚合。
 
 ##示例
 
