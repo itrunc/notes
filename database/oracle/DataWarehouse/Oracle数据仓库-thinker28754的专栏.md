@@ -131,7 +131,7 @@ JOIN KEY (customers.country_id) REFERENCES country);
 
 ##Bitmap join index
 
-Bitmap index的主要思想就是，针对每一个可能的值x，建立一个或一组位图映射，每个bit为1代表这个位置的值等于x，为0则不等于x。而每个位置都可以直接映射到某一行的rowid。由于在执行DML操作时，锁定的是整个bitmap，而不是bitmap中的某个位，所以bitmap index对于并发DML的性能很差，而且频繁的DML操作会使得bitmap index的空间效率大打折扣，所以OLTP系统并不合适使用bitmap index。对于基本没有DML操作，有大量ad hoc查询的Data warehouse环境则相当有效。关于bitmap index的理解，可以参考itpub上的一篇深入讨论。
+Bitmap index的主要思想就是，针对每一个可能的值x，建立一个或一组位图映射，每个bit为1代表这个位置的值等于x，为0则不等于x。而每个位置都可以直接映射到某一行的rowid。由于在执行DML操作时，锁定的是整个bitmap，而不是bitmap中的某个位，所以bitmap index对于并发DML的性能很差，而且频繁的DML操作会使得bitmap index的空间效率大打折扣，所以OLTP系统并不合适使用bitmap index。对于基本没有DML操作，有大量ad hoc查询的Data warehouse环境则相当有效。关于bitmap index的理解，可以参考[itpub上的一篇深入讨论](http://www.itpub.net/thread-114023-1-1.html)。
 
 从oracle9i起，oracle又引进了一种新的索引类型：bitmap join index。和bitmap index建立在单个table上不同，bitmap join index是基于多表连接的，连接条件要求是等于的内连接(equi-inner join)。对于数据仓库而言，较普遍的是Fact table的外键列和相关的Dimension table的主键列的连接操作。
 
