@@ -244,9 +244,9 @@ alter table sales add constraint sales_uk unique(sales_id);
 
 ```
 SQL> select index_name,column_name from user_ind_columns where index_name='SALES_UK';
-INDEX_NAME COLUMN_NAME
+INDEX_NAME            COLUMN_NAME
 --------------------- ---------------------
-SALES_UK SALES_ID
+SALES_UK              SALES_ID
 ```
 
 在数据仓库环境中，这个unique index可能是不合适的：
@@ -289,9 +289,7 @@ ORA-25128: No insert/update/delete on table with constraint (NING.SALES_UK) disa
 
 ###Range partition
 
-范围分区就是安装分区键的不同范围的数据进入到不同的分区当中，对于按照时间延续性的历史数据，这种分区非常合适。所以这种分区也是
-
-最常见的分区形式。
+范围分区就是安装分区键的不同范围的数据进入到不同的分区当中，对于按照时间延续性的历史数据，这种分区非常合适。所以这种分区也是最常见的分区形式。
 
 例如，对于一个销售记录的表，可以按照销售时间来分区，每个月的数据都单独做为一个分区：
 
