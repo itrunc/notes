@@ -4,7 +4,7 @@ shared pool用于缓存许多种类型的程序数据，例如，SQL/PLSQL执行
 
 shared pool被分成多个子组件，最重要的几个见下图：
 
-![Figure 14-12 Shared Pool](../../../../public/imgs/cncpt225.gif)
+![Figure 14-12 Shared Pool](img/cncpt225.gif)
 
 ##库缓存(Library Cache)
 
@@ -39,7 +39,7 @@ library cache是shared pool中用于存储SQL/PLSQL执行计划的内存结构�
 
 下图展示一个专用服务器架构(dedicated server architecture)中两个会话在他们的PGA中保留相同语句的副本。在共享服务器中，副本是存储在UGA中的（UGA是large pool中的一块内存区域，如果large pool不存在则存放在shared pool中）。
 
-![Figure 14-13 Private SQL Areas and Shared SQL Area](../../../../public/imgs/cncpt252.gif)
+![Figure 14-13 Private SQL Areas and Shared SQL Area](img/cncpt252.gif)
 
 >**更多信息请参考**
 >
