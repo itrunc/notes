@@ -282,3 +282,6 @@ Note the following characteristics of partitioned IOTs:
 
 Oracle Database supports bitmap indexes on partitioned and nonpartitioned index-organized tables. A mapping table is required for creating bitmap indexes on an index-organized table.Partitioned Index-Organized Tables
 
+##Reference
+
+* [1] [Partitions, Views, and Other Schema Objects](http://docs.oracle.com/database/121/CNCPT/schemaob.htm#CFAGCHCD)
