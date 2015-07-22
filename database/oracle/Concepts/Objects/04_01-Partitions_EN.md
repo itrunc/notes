@@ -284,4 +284,4 @@ Oracle Database supports bitmap indexes on partitioned and nonpartitioned index-
 
 ##Reference
 
-* [1] [Partitions, Views, and Other Schema Objects](http://docs.oracle.com/database/121/CNCPT/schemaob.htm#CFAGCHCD)
+* [1] [Partitions, Views, and Other Schema Objects](http://docs.oracle.com/database/121/CNCPT/schemaob.htm#CFAGCECI)
