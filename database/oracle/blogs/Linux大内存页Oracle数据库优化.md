@@ -12,13 +12,13 @@ PC Server发展到今天，在性能方面有着长足的进步。64位的CPU在
 
 ```
 $cat/proc/meminfo
-MemTotal:     32999792 kB
-MemFree:       1438672 kB
-Buffers:        112304 kB
-Cached:       23471680 kB
-SwapCached:       1296 kB
-Active:       19571024 kB
-Inactive:      6085396 kB
+MemTotal:        32999792 kB
+MemFree:          1438672 kB
+Buffers:           112304 kB
+Cached:          23471680 kB
+SwapCached:          1296 kB
+Active:          19571024 kB
+Inactive:         6085396 kB
 HighTotal:              0 kB
 HighFree:               0 kB
 LowTotal:        32999792 kB
@@ -26,18 +26,18 @@ LowFree:          1438672 kB
 SwapTotal:       38371320 kB
 SwapFree:        38260796 kB
 Dirty:                280 kB
-Writeback:              0kB
+Writeback:               0kB
 AnonPages:        2071192 kB
 Mapped:          12455324 kB
 Slab:              340140 kB
 PageTables:       4749076 kB
 NFS_Unstable:           0 kB
 Bounce:                 0 kB
-CommitLimit:     54871216kB
-Committed_AS:   17226744 kB
-VmallocTotal:34359738367 kB
+CommitLimit:      54871216kB
+Committed_AS:    17226744 kB
+VmallocTotal: 34359738367 kB
 VmallocUsed:        22016 kB
-VmallocChunk:34359716303 kB
+VmallocChunk: 34359716303 kB
 ```
 
 从现象上看，SYS CPU高是分析问题的一个重要线索。
@@ -49,67 +49,67 @@ VmallocChunk:34359716303 kB
 ```
 SQL> select sid,serial#,program,machine,sql_id,eventfrom v$session where type='USER' and status='ACTIVE';
 
-SID      SERIAL# PROGRAM        MACHINE      SQL_ID       EVENT
--------------------- ------------------------------ ---------- -------------     
-519       4304                  xxx_app1  0gc4uvt2pqvpu latch: cache buffers chains
-459      12806                  xxx_app1  0gc4uvt2pqvpu latch: cache buffers chains
-454       5518                  xxx_app1  15hq76k17h4ta latch: cache buffers chains
-529       7708                  xxx_app1  0gc4uvt2pqvpu latch: cache buffers chains
-420      40948                  xxx_app1   0gc4uvt2pqvpu latch: cache buffers chains
-353      56222                  xxx_app1  f7fxxczffp5rx latch: cache buffers chains
-243      42611                  xxx_app1   2zqg4sbrq7zay latch: cache buffers chains
-458      63221              xxxTimer.exe    APPSERVER 9t1ujakwt6fnf local write wait
+SID    SERIAL#  PROGRAM        MACHINE         SQL_ID          EVENT
+------ -------- -------------- --------------- --------------- -------------     
+519       4304  xxx_app1                       0gc4uvt2pqvpu   latch: cache buffers chains
+459      12806  xxx_app1                       0gc4uvt2pqvpu   latch: cache buffers chains
+454       5518  xxx_app1                       15hq76k17h4ta   latch: cache buffers chains
+529       7708  xxx_app1                       0gc4uvt2pqvpu   latch: cache buffers chains
+420      40948  xxx_app1                       0gc4uvt2pqvpu   latch: cache buffers chains
+353      56222  xxx_app1                       f7fxxczffp5rx   latch: cache buffers chains
+243      42611  xxx_app1                       2zqg4sbrq7zay   latch: cache buffers chains
+458      63221  xxxTimer.exe    APPSERVER      9t1ujakwt6fnf   local write wait
 ...为节省篇幅，省略部分内容...
-409       4951                  xxx_app1   7d4c6m3ytcx87 read by other session
-239      51959                  xxx_app1   7d4c6m3ytcx87 read by other session
-525       3815              xxxTimer.exe  APPSERVER 0ftnnr7pfw7r6 enq: RO -fast object reu
-518       7845                  xxx_app1  log file sync
-473      1972              xxxTimer.exe  APPSERVER 5017jsr7kdk3b log file sync
-197      37462                  xxx_app1   cbvbzbfdxn2w7 db file sequential read
-319       4939              xxxTimer.exe   APPSERVER 6vmk5uzu1p45m db file sequentialread
-434       2939                  xxx_app1  gw921z764rmkc latch: shared pool
-220      50017                  xxx_app1  2zqg4sbrq7zay latch: library cache
-301      36418                  xxx_app1  02dw161xqmrgf latch: library cache
-193      25003 oracle@xxx_db1 (J001)          xxx_db1   jobq slave wait
-368      64846 oracle@xxx_db1 (J000)          xxx_db1   jobq slave wait
-218      13307 sqlplus@xxx_db1 (TNS V1-V3)    xxx_db1  5rby2rfcgs6b7 SQL*Net message to client
-435       1883                                xxx_app1  fd7369jwkuvty SQL*Net message from client
-448       3001 xxxTimer.exe                   APPSERVER bsk0kpawwztnwSQL*Net message from dblink
+409       4951  xxx_app1                       7d4c6m3ytcx87   read by other session
+239      51959  xxx_app1                       7d4c6m3ytcx87   read by other session
+525       3815  xxxTimer.exe    APPSERVER      0ftnnr7pfw7r6   enq: RO -fast object reu
+518       7845  xxx_app1                                       log file sync
+473       1972  xxxTimer.exe    APPSERVER      5017jsr7kdk3b   log file sync
+197      37462  xxx_app1                       cbvbzbfdxn2w7   db file sequential read
+319       4939  xxxTimer.exe    APPSERVER      6vmk5uzu1p45m   db file sequentialread
+434       2939  xxx_app1                       gw921z764rmkc   latch: shared pool
+220      50017  xxx_app1                       2zqg4sbrq7zay   latch: library cache
+301      36418  xxx_app1                       02dw161xqmrgf   latch: library cache
+193      25003  oracle@xxx_db1 (J001)                          jobq slave wait
+368      64846  oracle@xxx_db1 (J000)                          jobq slave wait
+218      13307  sqlplus@xxx_db1 (TNS V1-V3)    5rby2rfcgs6b7   SQL*Net message to client
+435       1883  xxx_app1                       fd7369jwkuvty   SQL*Net message from client
+448       3001  xxxTimer.exe    APPSERVER      bsk0kpawwztnw   SQL*Net message from dblink
 ```
 
 ```
 SQL>@waitevent
 
 SID    EVENT                          SECONDS_IN_WAIT   STATE
------------------------------------ --------------- -------------------
+---- ------------------------------   ---------------   -------------------
 556   latch: cache buffers chains       35                WAITED KNOWN TIME     
-464   latch:cache buffers chai ns       2               WAITING              
-427   latch:cache buffers chai ns      34                WAITED SHORT TIME  
-458   localwrite wait                  63                WAITING
-403   writecomplete waits              40                WAITING
-502   writecomplete waits              41                WAITING
-525   enq:RO - fast object reuse      40                WAITING  
-368   enq:RO - fast object reu se      23                WAITING   
+464   latch:cache buffers chai ns        2                WAITING              
+427   latch:cache buffers chai ns       34                WAITED SHORT TIME  
+458   localwrite wait                   63                WAITING
+403   writecomplete waits               40                WAITING
+502   writecomplete waits               41                WAITING
+525   enq:RO - fast object reuse        40                WAITING  
+368   enq:RO - fast object reu se       23                WAITING   
 282   db file sequential read            0                WAITING
-501   dbfile sequential read            2                WAITED SHORT TIME
+501   dbfile sequential read             2                WAITED SHORT TIME
 478   db file sequential read            0                WAITING
 281   db file sequential read            6                WAITED KNOWN TIME
 195   db file sequential read            4                WAITED KNOWN TIME
 450   db file sequential read            2                WAITED KNOWN TIME
 529   db file sequential read            1                WAITING
-310   dbfile sequential read            0               WAITED KNOWN TIME
-316   db filesequential read           89                WAITED SHORT TIME
+310   dbfile sequential read             0                WAITED KNOWN TIME
+316   db filesequential read            89                WAITED SHORT TIME
 370   db file sequential read            1                WAITING
 380   db file sequential read            1                WAITED SHORT TIME
 326   jobq slave wait                  122                WAITING
 378   jobq slave wait                    2                WAITING
 425   jobq slave wait                  108                WAITING
 208   SQL*Net more data from db         11                WAITED SHORT TIME   link
-537   Streams AQ: waiting for t       7042               WAITING  ime management or cleanup  tasks
+537   Streams AQ: waiting for t       7042                WAITING  ime management or cleanup  tasks
 549   Streams AQ: qmn coordinat    1585854                WAITING or idle wait
 507   Streams AQ: qmn slave idl    1585854                WAITING   e wait
-430   latch free                        2                WAITED KNOWN TIME
-565   latch:cache buffers lru         136                WAITED SHORT TIME   chain
+430   latch free                         2                WAITED KNOWN TIME
+565   latch:cache buffers lru          136                WAITED SHORT TIME   chain
 ```
 
 从数据库中的活动以及等待事件来看，并没有太大的异常。值得注意的是，在数据库服务器CPU利用率长期在100%，或物理内存耗尽并伴有大量的交换内存换入换出时，需要仔细地诊断数据库中的性能现象，比如某类较多的等待事件，是由CPU或内存不足导致的结果还是因为这些数据库中的特定的活动才是Root Cause引起CPU过高或内存耗尽。
@@ -122,15 +122,15 @@ SID    EVENT                          SECONDS_IN_WAIT   STATE
 StatisticName                                  1st            2nd           Value      
 -----------------------------------   -------------- -------------- ------------------------
 BUSY_TIME                                  3,475,776      1,611,753
-IDLE_TIME                                 2,266,224      4,065,506
+IDLE_TIME                                  2,266,224      4,065,506
 IOWAIT_TIME                                  520,453        886,345
-LOAD                                            -67             -3
-NICE_TIME                                         0              0
+LOAD                                             -67             -3
+NICE_TIME                                          0              0
 NUM_CPU_SOCKETS                                    0              0
 PHYSICAL_MEMORY_BYTES                              0              0
-RSRC_MGR_CPU_WAIT_TIME                             0             0
-SYS_TIME                                  1,802,025        205,644
-USER_TIME                                 1,645,837      1,381,719
+RSRC_MGR_CPU_WAIT_TIME                             0              0
+SYS_TIME                                   1,802,025        205,644
+USER_TIME                                  1,645,837      1,381,719
 ```
 
 上面的数据中，是来自于包含故障时间段的1小时(1st)和正常时间段1小时(2nd)的AWR的对比数据。对于故障分析来说，特别是故障时间比较短的情况下，1小时的AWR报告会不够准确地反映故障期间的性能情况。但是我们在Trouble Shooting之时，首要的是需要从各种数据中，确定方向。正如前面提到，SYS部分的CPU利用率过高是一个很重要的线索，而数据库内部的其他性能数据相差不大的情况下，可以先从CPU这一点着手。
@@ -271,7 +271,7 @@ Page Table（页表）就是用于操作系统维护进程虚拟地址和物理�
     ```
     # grub.confgenerated by anaconda
     # Note thatyou do not have to rerun grub after making changes to this file
-    #NOTICE:  You have a /boot partition.  This means that
+    # NOTICE:  You have a /boot partition.  This means that
     # all kerneland initrd paths are relative to /boot/, eg.
     # root(hd0,0)
     # kernel/vmlinuz-version ro root=/dev/VolGroup00/LogVol00
@@ -299,9 +299,9 @@ Page Table（页表）就是用于操作系统维护进程虚拟地址和物理�
     
     发现这个系统使用的内核带有"xen"字样，我们修改这个文件，将default=0改为default=2，或者将前面2种内核用#号屏蔽掉，然后重启数据库服务器，发现新的内核已经支持HugePage。
 
-    数据库启用大内存页之后，本文描述的性能问题甚至是在增大了SGA的情况下也没有出现。观察/proc/meminfo数据，PageTables占用的内存一直保持在120M以下，与原来相比，减少了4500MB。据观察，CPU的利用率也较使用HugePages之前有所下降，而系统运行也相当地稳定，至少没有出现因使用HugePage而产生的BUG。
+数据库启用大内存页之后，本文描述的性能问题甚至是在增大了SGA的情况下也没有出现。观察/proc/meminfo数据，PageTables占用的内存一直保持在120M以下，与原来相比，减少了4500MB。据观察，CPU的利用率也较使用HugePages之前有所下降，而系统运行也相当地稳定，至少没有出现因使用HugePage而产生的BUG。
 
-    测试表明，对于OLTP系统来说，在运行Oracle数据库的Linux上启用HugePage，数据库处理能力和响应时间均有不同程度的提高，最高甚至可以达到10%以上。
+测试表明，对于OLTP系统来说，在运行Oracle数据库的Linux上启用HugePage，数据库处理能力和响应时间均有不同程度的提高，最高甚至可以达到10%以上。
     
 ##四、小结
 
