@@ -1,0 +1,246 @@
+#Extraction in Data Warehouses
+
+This chapter discusses extraction, which is the process of taking data from an operational system and moving it to your data warehouse or staging system. The chapter discusses:
+
+##Overview of Extraction in Data Warehouses
+
+Extraction is the operation of extracting data from a source system for further use in a data warehouse environment. This is the first step of the ETL process. After the extraction, this data can be transformed and loaded into the data warehouse.
+
+The source systems for a data warehouse are typically transaction processing applications. For example, one of the source systems for a sales analysis data warehouse might be an order entry system that records all of the current order activities.
+
+Designing and creating the extraction process is often one of the most time-consuming tasks in the ETL process and, indeed, in the entire data warehousing process. The source systems might be very complex and poorly documented, and thus determining which data needs to be extracted can be difficult. The data has to be extracted normally not only once, but several times in a periodic manner to supply all changed data to the data warehouse and keep it up-to-date. Moreover, the source system typically cannot be modified, nor can its performance or availability be adjusted, to accommodate the needs of the data warehouse extraction process.
+
+These are important considerations for extraction and ETL in general. This chapter, however, focuses on the technical considerations of having different kinds of sources and extraction methods. It assumes that the data warehouse team has already identified the data that will be extracted, and discusses common techniques used for extracting data from source databases.
+
+Designing this process means making decisions about the following two main aspects:
+
+* Which extraction method do I choose?
+
+    This influences the source system, the transportation process, and the time needed for refreshing the warehouse.
+
+* How do I provide the extracted data for further processing?
+
+    This influences the transportation method, and the need for cleaning and transforming the data.
+
+##Introduction to Extraction Methods in Data Warehouses
+
+The extraction method you should choose is highly dependent on the source system and also from the business needs in the target data warehouse environment. Very often, there is no possibility to add additional logic to the source systems to enhance an incremental extraction of data due to the performance or the increased workload of these systems. Sometimes even the customer is not allowed to add anything to an out-of-the-box application system.
+
+This section contains the following topics:
+
+###Logical Extraction Methods
+
+There are two types of logical extraction:
+
+####Full Extraction
+
+The data is extracted completely from the source system. Because this extraction reflects all the data currently available on the source system, there's no need to keep track of changes to the data source since the last successful extraction. The source data will be provided as-is and no additional logical information (for example, timestamps) is necessary on the source site. An example for a full extraction may be an export file of a distinct table or a remote SQL statement scanning the complete source table.
+
+####Incremental Extraction
+
+At a specific point in time, only the data that has changed since a well-defined event back in history is extracted. This event may be the last time of extraction or a more complex business event like the last booking day of a fiscal period. To identify this delta change there must be a possibility to identify all the changed information since this specific time event. This information can be either provided by the source data itself such as an application column, reflecting the last-changed timestamp or a change table where an appropriate additional mechanism keeps track of the changes besides the originating transactions. In most cases, using the latter method means adding extraction logic to the source system.
+
+Many data warehouses do not use any change-capture techniques as part of the extraction process. Instead, entire tables from the source systems are extracted to the data warehouse or staging area, and these tables are compared with a previous extract from the source system to identify the changed data. This approach may not have significant impact on the source systems, but it clearly can place a considerable burden on the data warehouse processes, particularly if the data volumes are large.
+
+###Physical Extraction Methods
+
+Depending on the chosen logical extraction method and the capabilities and restrictions on the source side, the extracted data can be physically extracted by two mechanisms. The data can either be extracted online from the source system or from an offline structure. Such an offline structure might already exist or it might be generated by an extraction routine.
+
+There are the following methods of physical extraction:
+
+####Online Extraction
+
+The data is extracted directly from the source system itself. The extraction process can connect directly to the source system to access the source tables themselves or to an intermediate system that stores the data in a preconfigured manner (for example, snapshot logs or change tables). Note that the intermediate system is not necessarily physically different from the source system.
+
+With online extractions, you must consider whether the distributed transactions are using original source objects or prepared source objects.
+
+####Offline Extraction
+
+The data is not extracted directly from the source system but is staged explicitly outside the original source system. The data already has an existing structure (for example, redo logs, archive logs or transportable tablespaces) or was created by an extraction routine.
+
+You should consider the following structures:
+
+* Flat files
+
+    Data in a defined, generic format. Additional information about the source object is necessary for further processing.
+
+* Dump files
+
+    Oracle-specific format. Information about the containing objects may or may not be included, depending on the chosen utility.
+
+* Redo and archive logs
+
+    Information is in a special, additional dump file.
+
+* Transportable tablespaces
+
+    A powerful way to extract and move large volumes of data between Oracle databases. A more detailed example of using this feature to extract and transport data is provided in [Chapter 16, "Transportation in Data Warehouses"](http://docs.oracle.com/database/121/DWHSG/transport.htm#g1007787). Oracle recommends that you use transportable tablespaces whenever possible, because they can provide considerable advantages in performance and manageability over other extraction techniques.
+
+    > See [Oracle Database Utilities](http://docs.oracle.com/database/121/SUTIL/toc.htm) for more information on using export/import.
+
+###Change Tracking Methods
+
+An important consideration for extraction is incremental extraction, also called change tracking. If a data warehouse extracts data from an operational system on a nightly basis, then the data warehouse requires only the data that has changed since the last extraction (that is, the data that has been modified in the past 24 hours). Change tracking is also the key-enabling technology for providing near real-time, or on-time, data warehousing.
+
+When it is possible to efficiently identify and extract only the most recently changed data, the extraction process (and all downstream operations in the ETL process) can be much more efficient, because it must extract a much smaller volume of data. Unfortunately, for many source systems, identifying the recently modified data may be difficult or intrusive to the operation of the system. Change tracking is typically the most challenging technical issue in data extraction.
+
+Because change tracking is often desirable as part of the extraction process, this section describes several techniques for implementing a self-developed change capture on Oracle Database source systems:
+
+* **Timestamps**
+
+    The tables in some operational systems have timestamp columns. The timestamp specifies the time and date that a given row was last modified. If the tables in an operational system have columns containing timestamps, then the latest data can easily be identified using the timestamp columns. For example, the following query might be useful for extracting today's data from an *orders* table:
+
+    ```sql
+    SELECT * FROM orders 
+    WHERE TRUNC(CAST(order_date AS date),'dd') = 
+      TO_DATE(SYSDATE,'dd-mon-yyyy');
+    ```
+
+    If the timestamp information is not available in an operational source system, you are not always able to modify the system to include timestamps. Such modification would require, first, modifying the operational system's tables to include a new timestamp column and then creating a trigger to update the timestamp column following every operation that modifies a given row.
+
+* **Partitioning**
+
+    Some source systems might use range partitioning, such that the source tables are partitioned along a date key, which allows for easy identification of new data. For example, if you are extracting from an *orders* table, and the *orders* table is partitioned by week, then it is easy to identify the current week's data.
+
+* **Triggers**
+
+    Triggers can be created in operational systems to keep track of recently updated records. They can then be used in conjunction with timestamp columns to identify the exact time and date when a given row was last modified. You do this by creating a trigger on each source table that requires change data capture. Following each DML statement that is executed on the source table, this trigger updates the timestamp column with the current time. Thus, the timestamp column provides the exact time and date when a given row was last modified.
+
+    A similar internalized trigger-based technique is used for Oracle materialized view logs. These logs are used by materialized views to identify changed data, and these logs are accessible to end users. However, the format of the materialized view logs is not documented and might change over time.
+
+    Materialized view logs rely on triggers, but they provide an advantage in that the creation and maintenance of this change-data system is largely managed by the database.
+
+    Trigger-based techniques might affect performance on the source systems, and this impact should be carefully considered prior to implementation on a production source system.
+
+These techniques are based upon the characteristics of the source systems, or may require modifications to the source systems. Thus, each of these techniques must be carefully evaluated by the owners of the source system prior to implementation.
+
+Each of these techniques can work in conjunction with the data extraction technique discussed previously. For example, timestamps can be used whether the data is being unloaded to a file or accessed through a distributed query.
+
+##Data Warehousing Extraction Examples
+
+You can extract data in two ways:
+
+###Extraction Using Data Files
+
+Most database systems provide mechanisms for exporting or unloading data from the internal database format into flat files. Extracts from mainframe systems often use COBOL programs, but many databases, and third-party software vendors, provide export or unload utilities.
+
+Data extraction does not necessarily mean that entire database structures are unloaded in flat files. In many cases, it may be appropriate to unload entire database tables or objects. In other cases, it may be more appropriate to unload only a subset of a given table such as the changes on the source system since the last extraction or the results of joining multiple tables together. Different extraction techniques vary in their capabilities to support these two scenarios.
+
+When the source system is an Oracle database, several alternatives are available for extracting data into files:
+
+####Extracting into Flat Files Using SQL*Plus
+
+The most basic technique for extracting data is to execute a SQL query in SQL*Plus and direct the output of the query to a file. For example, to extract a flat file, country_city.log, with the pipe sign as delimiter between column values, containing a list of the cities in the US in the tables countries and customers, the following SQL script could be run:
+
+```sql
+SET echo off 
+SET pagesize 0 
+SPOOL country_city.log
+SELECT distinct t1.country_name ||'|'|| t2.cust_city  
+FROM countries t1, customers t2 WHERE t1.country_id = t2.country_id 
+AND t1.country_name= 'United States of America';
+SPOOL off
+```
+
+The exact format of the output file can be specified using SQL*Plus system variables.
+
+This extraction technique offers the advantage of storing the result in a customized format. Note that, using the external table data pump unload facility, you can also extract the result of an arbitrary SQL operation. The example previously extracts the results of a join.
+
+This extraction technique can be parallelized by initiating multiple, concurrent SQL*Plus sessions, each session running a separate query representing a different portion of the data to be extracted. For example, suppose that you wish to extract data from an orders table, and that the orders table has been range partitioned by month, with partitions orders_jan1998, orders_feb1998, and so on. To extract a single year of data from the orders table, you could initiate 12 concurrent SQL*Plus sessions, each extracting a single partition. The SQL script for one such session could be:
+
+```sql
+SPOOL order_jan.dat
+SELECT * FROM orders PARTITION (orders_jan1998);
+SPOOL OFF
+```
+
+These 12 SQL*Plus processes would concurrently spool data to 12 separate files. You can then concatenate them if necessary (using operating system utilities) following the extraction. If you are planning to use SQL*Loader for loading into the target, these 12 files can be used as is for a parallel load with 12 SQL*Loader sessions. See [Chapter 16, "Transportation in Data Warehouses"](http://docs.oracle.com/database/121/DWHSG/transport.htm#g1007787) for an example.
+
+Even if the orders table is not partitioned, it is still possible to parallelize the extraction either based on logical or physical criteria. The logical method is based on logical ranges of column values, for example:
+
+```sql
+SELECT ... WHERE order_date
+BETWEEN TO_DATE('01-JAN-99') AND TO_DATE('31-JAN-99');
+```
+
+The physical method is based on a range of values. By viewing the data dictionary, it is possible to identify the Oracle Database data blocks that make up the orders table. Using this information, you could then derive a set of rowid-range queries for extracting data from the orders table:
+
+```sql
+SELECT * FROM orders WHERE rowid BETWEEN value1 and value2;
+```
+
+Parallelizing the extraction of complex SQL queries is sometimes possible, although the process of breaking a single complex query into multiple components can be challenging. In particular, the coordination of independent processes to guarantee a globally consistent view can be difficult. Unlike the SQL*Plus approach, using the external table data pump unload functionality provides transparent parallel capabilities.
+
+Note that all parallel techniques can use considerably more CPU and I/O resources on the source system, and the impact on the source system should be evaluated before parallelizing any extraction technique.
+
+####Extracting into Flat Files Using OCI or Pro*C Programs
+
+OCI programs (or other programs using Oracle call interfaces, such as Pro*C programs), can also be used to extract data. These techniques typically provide improved performance over the SQL*Plus approach, although they also require additional programming. Like the SQL*Plus approach, an OCI program can extract the results of any SQL query. Furthermore, the parallelization techniques described for the SQL*Plus approach can be readily applied to OCI programs as well.
+
+When using OCI or SQL*Plus for extraction, you need additional information besides the data itself. At minimum, you need information about the extracted columns. It is also helpful to know the extraction format, which might be the separator between distinct columns.
+
+####Exporting into Export Files Using the Export Utility
+
+The Export utility allows tables (including data) to be exported into Oracle Database export files. Unlike the SQL*Plus and OCI approaches, which describe the extraction of the results of a SQL statement, Export provides a mechanism for extracting database objects. Thus, Export differs from the previous approaches in several important ways:
+
+* The export files contain metadata as well as data. An export file contains not only the raw data of a table, but also information on how to re-create the table, potentially including any indexes, constraints, grants, and other attributes associated with that table.
+* A single export file may contain a subset of a single object, many database objects, or even an entire schema.
+* Export cannot be directly used to export the results of a complex SQL query. Export can be used only to extract subsets of distinct database objects.
+* The output of the Export utility must be processed using the Import utility.
+
+Oracle Database provides the original Export and Import utilities for backward compatibility and the data pump export/import infrastructure for high-performant, scalable and parallel extraction. See [Oracle Database Utilities](http://docs.oracle.com/database/121/SUTIL/toc.htm) for further details.
+
+####Extracting into Export Files Using External Tables
+
+In addition to the Export Utility, you can use external tables to extract the results from any SELECT operation. The data is stored in the platform independent, Oracle-internal data pump format and can be processed as regular external table on the target system. The following example extracts the result of a join operation in parallel into the four specified files. The only allowed external table type for extracting data is the Oracle-internal format ORACLE_DATAPUMP.
+
+```sql
+CREATE DIRECTORY def_dir AS '/net/dlsun48/private/hbaer/WORK/FEATURES/et';
+DROP TABLE extract_cust;
+CREATE TABLE extract_cust
+ORGANIZATION EXTERNAL
+(TYPE ORACLE_DATAPUMP DEFAULT DIRECTORY def_dir ACCESS PARAMETERS
+(NOBADFILE NOLOGFILE)
+LOCATION ('extract_cust1.exp', 'extract_cust2.exp', 'extract_cust3.exp',
+          'extract_cust4.exp'))
+PARALLEL 4 REJECT LIMIT UNLIMITED AS
+SELECT  c.*, co.country_name, co.country_subregion, co.country_region 
+FROM customers c, countries co where co.country_id=c.country_id;
+```
+
+The total number of extraction files specified limits the maximum degree of parallelism for the write operation. Note that the parallelizing of the extraction does not automatically parallelize the SELECT portion of the statement.
+
+Unlike using any kind of export/import, the metadata for the external table is not part of the created files when using the external table data pump unload. To extract the appropriate metadata for the external table, use the DBMS_METADATA package, as illustrated in the following statement:
+
+```sql
+SET LONG 2000
+SELECT DBMS_METADATA.GET_DDL('TABLE','EXTRACT_CUST') FROM DUAL;
+```
+
+###Extraction Through Distributed Operations
+
+Using distributed-query technology, one Oracle database can directly query tables located in various different source systems, such as another Oracle database or a legacy system connected with the Oracle gateway technology. Specifically, a data warehouse or staging database can directly access tables and data located in a connected source system. Gateways are another form of distributed-query technology. Gateways allow an Oracle database (such as a data warehouse) to access database tables stored in remote, non-Oracle databases. This is the simplest method for moving data between two Oracle databases because it combines the extraction and transformation into a single step, and requires minimal programming. However, this is not always feasible.
+
+Suppose that you wanted to extract a list of employee names with department names from a source database and store this data into the data warehouse. Using an Oracle Net connection and distributed-query technology, this can be achieved using a single SQL statement:
+
+```sql
+CREATE TABLE country_city AS SELECT distinct t1.country_name, t2.cust_city
+FROM countries@source_db t1, customers@source_db t2
+WHERE t1.country_id = t2.country_id 
+AND t1.country_name='United States of America';
+```
+
+This statement creates a local table in a data mart, country_city, and populates it with data from the countries and customers tables on the source system.
+
+This technique is ideal for moving small volumes of data. However, the data is transported from the source system to the data warehouse through a single Oracle Net connection. Thus, the scalability of this technique is limited. For larger data volumes, file-based data extraction and transportation techniques are often more scalable and thus more appropriate.
+
+> **See Also:**
+>
+> * [Oracle Database Heterogeneous Connectivity User's Guide](http://docs.oracle.com/database/121/HETER/GUID-38A89AFD-B5E1-4710-A11B-2A05A1276A30.htm#HETER006) for more information regarding distributed queries
+>
+> * [Oracle Database Concepts](http://docs.oracle.com/database/121/CNCPT/transact.htm#CNCPT1125) for more information regarding distributed queries
+
+##Reference
+
+* [1] [15 Extraction in Data Warehouses](http://docs.oracle.com/database/121/DWHSG/extract.htm)
+
