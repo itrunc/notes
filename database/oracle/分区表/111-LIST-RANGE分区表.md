@@ -123,6 +123,99 @@ NAME                           OBJEC COLUMN_NAME                    COLUMN_POSIT
 LEADERSHIP                     TABLE CAMPAIGN                                     1
 ```
 
+##创建LOCAL索引
+
+```
+CREATE UNIQUE INDEX pk_idx_ldr ON leadership(market, campaign, memberid) LOCAL;
+```
+
+查看索引：
+
+```
+SQL> SELECT object_name,subobject_name,object_id,object_type,status
+  2  FROM user_objects WHERE object_name='PK_IDX_LDR'
+  3  ORDER BY object_id;
+
+OBJECT_NAME    SUBOBJECT_NAME    OBJECT_ID OBJECT_TYPE         STATUS
+-------------- ---------------- ---------- ------------------- -------
+PK_IDX_LDR                           80296 INDEX               VALID
+PK_IDX_LDR     LDR_AUS               80297 INDEX PARTITION     VALID
+PK_IDX_LDR     LDR_NZD               80298 INDEX PARTITION     VALID
+PK_IDX_LDR     LDR_AUS_201401        80299 INDEX SUBPARTITION  VALID
+PK_IDX_LDR     LDR_AUS_201402        80300 INDEX SUBPARTITION  VALID
+PK_IDX_LDR     LDR_NZD_201401        80301 INDEX SUBPARTITION  VALID
+PK_IDX_LDR     LDR_NZD_201402        80302 INDEX SUBPARTITION  VALID
+
+7 rows selected.
+
+```
+
+```
+SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
+  2  FROM user_ind_subpartitions
+  3  WHERE index_name='PK_IDX_LDR'
+  4  ORDER BY partition_name,subpartition_position;
+
+INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
+-------------- ---------------- ------------------------------ ---------- ------------------
+PK_IDX_LDR     LDR_AUS          LDR_AUS_201401                 201402     TP_LDR_AUS_201401
+PK_IDX_LDR     LDR_AUS          LDR_AUS_201402                 201403     TP_LDR_AUS_201402
+PK_IDX_LDR     LDR_NZD          LDR_NZD_201401                 201402     TP_LDR_NZD_201401
+PK_IDX_LDR     LDR_NZD          LDR_NZD_201402                 201403     TP_LDR_NZD_201402
+```
+
+可见，默认情况下，索引使用与分区数据相同的表空间。
+
+可以在创建索引的时候为每个分区指定存储的表空间。
+
+先删掉以上创建的索引：
+
+```sql
+DROP INDEX pk_idx_ldr;
+```
+
+创建拥有独立表空间的索引：
+
+```sql
+--创建索引使用的表空间
+CREATE TABLESPACE tp_idx_ldr_aus_201401 DATAFILE 'idx_ldr_aus_201401.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+CREATE TABLESPACE tp_idx_ldr_aus_201402 DATAFILE 'idx_ldr_aus_201402.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+CREATE TABLESPACE tp_idx_ldr_nzd_201401 DATAFILE 'idx_ldr_nzd_201401.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+CREATE TABLESPACE tp_idx_ldr_nzd_201402 DATAFILE 'idx_ldr_nzd_201402.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+
+--创建索引，并指定存储表空间
+CREATE UNIQUE INDEX pk_idx_ldr ON leadership(market, campaign, memberid) LOCAL
+(
+  PARTITION idx_ldr_aus
+  (
+    SUBPARTITION idx_ldr_aus_201401 TABLESPACE tp_idx_ldr_aus_201401
+   ,SUBPARTITION idx_ldr_aus_201402 TABLESPACE tp_idx_ldr_aus_201402
+  )
+ ,PARTITION idx_ldr_nzd
+  (
+    SUBPARTITION idx_ldr_nzd_201401 TABLESPACE tp_idx_ldr_nzd_201401
+   ,SUBPARTITION idx_ldr_nzd_201402 TABLESPACE tp_idx_ldr_nzd_201402
+  )
+);
+
+```
+
+查看索引
+
+```
+SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
+  2  FROM user_ind_subpartitions
+  3  WHERE index_name='PK_IDX_LDR'
+  4  ORDER BY partition_name,subpartition_position;
+
+INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
+-------------- ---------------- ------------------------------ ---------- -----------------------
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201401             201402     TP_IDX_LDR_AUS_201401
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201402             201403     TP_IDX_LDR_AUS_201402
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201401             201402     TP_IDX_LDR_NZD_201401
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201402             201403     TP_IDX_LDR_NZD_201402
+```
+
 ##添加表分区
 
 在添加表分区时，如果未定义表子分区，则 Oracle 会根据 SUBPARITION TEMPLATES 自动创建子分区。如果 SUBPARTITION TEMPLATES 也未定义，则 Oracle 将自动创建只有一个子分区的表分区。
@@ -163,6 +256,58 @@ LEADERSHIP     LDR_SAP_201401        80210 TABLE SUBPARTITION  VALID
 9 rows selected.
 ```
 
+###查看新的表分区索引
+
+```
+SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
+  2  FROM user_ind_subpartitions
+  3  WHERE index_name='PK_IDX_LDR'
+  4  ORDER BY partition_name,subpartition_position;
+
+INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
+-------------- ---------------- ------------------------------ ---------- ----------------------
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201401             201402     TP_IDX_LDR_AUS_201401
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201402             201403     TP_IDX_LDR_AUS_201402
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201401             201402     TP_IDX_LDR_NZD_201401
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201402             201403     TP_IDX_LDR_NZD_201402
+PK_IDX_LDR     LDR_SAP          LDR_SAP_201401                 201402     TP_LDR_SAP_201401
+```
+
+新添加的表分区索引使用与分区相同的名称，并与分区使用相同的表空间。
+
+以下修改新分区索引的分区名、子分区名和表空间
+
+```sql
+--创建表空间
+CREATE TABLESPACE tp_idx_ldr_sap_201401 DATAFILE 'idx_ldr_sap_201401.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+
+--重建子分区索引，并使用独立的表空间
+ALTER INDEX pk_idx_ldr REBUILD SUBPARTITION ldr_sap_201401 TABLESPACE tp_idx_ldr_sap_201401;
+
+--索引分区名重命名
+ALTER INDEX pk_idx_ldr RENAME PARTITION ldr_sap TO idx_ldr_sap;
+
+--索引子分区名重命名
+ALTER INDEX pk_idx_ldr RENAME SUBPARTITION ldr_sap_201401 TO idx_ldr_sap_201401;
+```
+
+查看
+
+```
+SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
+  2  FROM user_ind_subpartitions
+  3  WHERE index_name='PK_IDX_LDR'
+  4  ORDER BY partition_name,subpartition_position;
+
+INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
+-------------- ---------------- ------------------------------ ---------- ---------------------
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201401             201402     TP_IDX_LDR_AUS_201401
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201402             201403     TP_IDX_LDR_AUS_201402
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201401             201402     TP_IDX_LDR_NZD_201401
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201402             201403     TP_IDX_LDR_NZD_201402
+PK_IDX_LDR     IDX_LDR_SAP      IDX_LDR_SAP_201401             201402     TP_IDX_LDR_SAP_201401
+```
+
 ##添加表子分区
 
 ```sql
@@ -198,35 +343,9 @@ LEADERSHIP     LDR_SAP_201402        80211 TABLE SUBPARTITION  VALID
 10 rows selected.
 ```
 
-##创建LOCAL索引
+###新子分区索引修正
 
-```
-CREATE UNIQUE INDEX pk_idx_ldr ON leadership(market, campaign, memberid) LOCAL;
-```
-
-查看索引：
-
-```
-SQL> SELECT object_name,subobject_name,object_id,object_type,status
-  2  FROM user_objects WHERE object_name='PK_IDX_LDR'
-  3  ORDER BY object_id;
-
-OBJECT_NAME    SUBOBJECT_NAME    OBJECT_ID OBJECT_TYPE         STATUS
--------------- ---------------- ---------- ------------------- -------
-PK_IDX_LDR                           80267 INDEX               VALID
-PK_IDX_LDR     LDR_AUS               80268 INDEX PARTITION     VALID
-PK_IDX_LDR     LDR_NZD               80269 INDEX PARTITION     VALID
-PK_IDX_LDR     LDR_SAP               80270 INDEX PARTITION     VALID
-PK_IDX_LDR     LDR_AUS_201401        80271 INDEX SUBPARTITION  VALID
-PK_IDX_LDR     LDR_AUS_201402        80272 INDEX SUBPARTITION  VALID
-PK_IDX_LDR     LDR_NZD_201401        80273 INDEX SUBPARTITION  VALID
-PK_IDX_LDR     LDR_NZD_201402        80274 INDEX SUBPARTITION  VALID
-PK_IDX_LDR     LDR_SAP_201401        80275 INDEX SUBPARTITION  VALID
-PK_IDX_LDR     LDR_SAP_201402        80276 INDEX SUBPARTITION  VALID
-
-10 rows selected.
-
-```
+修正之前
 
 ```
 SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
@@ -235,18 +354,47 @@ SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_na
   4  ORDER BY partition_name,subpartition_position;
 
 INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
--------------- ---------------- ------------------------------ ---------- ---------------------
-PK_IDX_LDR     LDR_AUS          LDR_AUS_201401                 201402     TP_LDR_AUS_201401
-PK_IDX_LDR     LDR_AUS          LDR_AUS_201402                 201403     TP_LDR_AUS_201402
-PK_IDX_LDR     LDR_NZD          LDR_NZD_201401                 201402     TP_LDR_NZD_201401
-PK_IDX_LDR     LDR_NZD          LDR_NZD_201402                 201403     TP_LDR_NZD_201402
-PK_IDX_LDR     LDR_SAP          LDR_SAP_201401                 201402     TP_LDR_SAP_201401
-PK_IDX_LDR     LDR_SAP          LDR_SAP_201402                 201403     TP_LDR_SAP_201402
+-------------- ---------------- ------------------------------ ---------- ----------------------
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201401             201402     TP_IDX_LDR_AUS_201401
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201402             201403     TP_IDX_LDR_AUS_201402
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201401             201402     TP_IDX_LDR_NZD_201401
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201402             201403     TP_IDX_LDR_NZD_201402
+PK_IDX_LDR     IDX_LDR_SAP      IDX_LDR_SAP_201401             201402     TP_IDX_LDR_SAP_201401
+PK_IDX_LDR     IDX_LDR_SAP      LDR_SAP_201402                 201403     USERS
+```
+
+修正脚本
+
+```sql
+--创建表空间
+CREATE TABLESPACE tp_idx_ldr_sap_201402 DATAFILE 'idx_ldr_sap_201402.dbf' SIZE 100M AUTOEXTEND ON NEXT 20M MAXSIZE UNLIMITED;
+
+--重建索引
+ALTER INDEX pk_idx_ldr REBUILD SUBPARTITION ldr_sap_201402 TABLESPACE tp_idx_ldr_sap_201402;
+
+--修改子分区索引名称
+ALTER INDEX pk_idx_ldr RENAME SUBPARTITION ldr_sap_201402 TO idx_ldr_sap_201402;
+```
+
+修正之后
+
+```
+SQL> SELECT index_name,partition_name,subpartition_name,high_value,tablespace_name
+  2  FROM user_ind_subpartitions
+  3  WHERE index_name='PK_IDX_LDR'
+  4  ORDER BY partition_name,subpartition_position;
+
+INDEX_NAME     PARTITION_NAME   SUBPARTITION_NAME              HIGH_VALUE TABLESPACE_NAME
+-------------- ---------------- ------------------------------ ---------- ----------------------
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201401             201402     TP_IDX_LDR_AUS_201401
+PK_IDX_LDR     IDX_LDR_AUS      IDX_LDR_AUS_201402             201403     TP_IDX_LDR_AUS_201402
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201401             201402     TP_IDX_LDR_NZD_201401
+PK_IDX_LDR     IDX_LDR_NZD      IDX_LDR_NZD_201402             201403     TP_IDX_LDR_NZD_201402
+PK_IDX_LDR     IDX_LDR_SAP      IDX_LDR_SAP_201401             201402     TP_IDX_LDR_SAP_201401
+PK_IDX_LDR     IDX_LDR_SAP      IDX_LDR_SAP_201402             201403     TP_IDX_LDR_SAP_201402
 
 6 rows selected.
 ```
-
-可见，默认情况下，索引使用与分区数据相同的表空间。可在建索引的时候为每个分区指定独立的表空间，此处略。
 
 ##插入数据
 
