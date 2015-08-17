@@ -83,8 +83,9 @@ TABLE_NAME     PARTITION_NAME   SUBPARTITION_COUNT HIGH_VALUE TABLESPACE_NAME
 -------------- ---------------- ------------------ ---------- ----------------
 LEADERSHIP     LDR_AUS                           2 'AUS'      USERS
 LEADERSHIP     LDR_NZD                           2 'NZD'      USERS
+```
 
-
+```
 SQL> SELECT *
   2  FROM user_part_key_columns
   3  WHERE name='LEADERSHIP'
@@ -109,8 +110,9 @@ LEADERSHIP     LDR_AUS          LDR_AUS_201401                 201402     TP_LDR
 LEADERSHIP     LDR_AUS          LDR_AUS_201402                 201403     TP_LDR_AUS_201402
 LEADERSHIP     LDR_NZD          LDR_NZD_201401                 201402     TP_LDR_NZD_201401
 LEADERSHIP     LDR_NZD          LDR_NZD_201402                 201403     TP_LDR_NZD_201402
+```
 
-
+```
 SQL> SELECT *
   2  FROM user_subpart_key_columns
   3  WHERE name='LEADERSHIP'
@@ -305,6 +307,12 @@ AUS     201402 002                  0                    REP               100
 ```sql
 ALTER TABLE leadership
   DROP SUBPARTITION ldr_sap_201402;
+```
+
+##删除表空间
+
+```sql
+DROP TABLESPACE tp_ldr_sap_201402 INCLUDING CONTENTS AND DATAFILES;
 ```
 
 ##删除表分区
