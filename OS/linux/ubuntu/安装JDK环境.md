@@ -11,13 +11,13 @@ tar -zxvf jdk-8u5-linux-x64.tar.gz
 ```
 sudo mkdir /usr/lib/jvm
 sudo mv jdk1.8.0_05 /usr/lib/jvm/java
-sudo chown -R root:root java
+sudo chown -R root:root /usr/lib/jvm/java
 ```
 
 配置环境变量
 
 ```
-sudo vim ~/.bashrc
+sudo vi ~/.bashrc
 ```
 
 在中间中添加以下内容：
