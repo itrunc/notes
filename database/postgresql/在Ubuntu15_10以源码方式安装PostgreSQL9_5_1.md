@@ -232,3 +232,28 @@ psql
 ```
 psql -h 127.0.0.1 -p 5432 -U postgres postgres
 ```
+
+##附：源码安装pgadmin3-1.22.1
+
+下载最新的pgAdmin3源码包：http://www.postgresql.org/ftp/pgadmin3/release/
+
+这里下载v1.22.1：https://ftp.postgresql.org/pub/pgadmin3/release/v1.22.1/src/pgadmin3-1.22.1.tar.gz
+
+安装依赖包：
+
+```sh
+sudo apt-get install libwxgtk2.8-dev wx-common libpq-dev
+```
+
+配置，指定prefix和pgsql安装目录
+
+```sh
+./configure --prefix=/opt/pgadmin3-1.22.1 --with-pgsql=/opt/pgsql
+```
+
+安装
+
+```sh
+make all
+make install
+```
