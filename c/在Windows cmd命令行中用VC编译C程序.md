@@ -79,3 +79,10 @@ C:\test>.\test
 Hello World!
 C:\test>
 ```
+
+以上编译后，会多出两个文件 test.exe 和 test.obj。以上执行的正是 test.exe。
+
+```
+C:\test>ls
+test.c  test.exe  test.obj
+```
