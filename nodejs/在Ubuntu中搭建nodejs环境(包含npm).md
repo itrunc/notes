@@ -1,4 +1,4 @@
-#在Ubuntu中搭建nodejs环境
+# 在Ubuntu中搭建nodejs环境
 
 nodejs下载页面：
 
