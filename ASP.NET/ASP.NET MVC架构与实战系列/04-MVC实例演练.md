@@ -1,4 +1,4 @@
-#ASP.NET MVC架构与实战系列之四：MVC实例演练
+# ASP.NET MVC架构与实战系列之四：MVC实例演练
 
 经过前三节基础理论的学习，我们在本节中开始我们的MVC实例演练之旅。在VS.NET中创建新的"ASP.NET MVC 3 Web Application"项目，并取个项目名：Miracle.Mvc.PartyInvites。为了简单起见，分别选择空模板、Razor视图引擎并取消"使用html5语义化标签"选项。项目创建完毕如下图所示：
 
@@ -349,6 +349,6 @@ public ViewResult RsvpForm(Models.Guest guest)
 
 到此为止，我们展示了一个简单的MVC应用，说明是如何应用基础理论到实践的过程，读者可在此[下载源代码](http://files.cnblogs.com/hmiinyu/Miracle.Mvc.PartyInvites.zip)进行参考分析。
 
-##Reference
+## Reference
 
 * [1] [原文链接](http://www.cnblogs.com/hmiinyu/archive/2012/09/30/2709063.html)

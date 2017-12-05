@@ -1,4 +1,4 @@
-#怎样设置git commit时信息的编辑器
+# 怎样设置git commit时信息的编辑器
 
 指定vim为commit时信息的编辑器：
 

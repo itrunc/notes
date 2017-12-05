@@ -1,4 +1,4 @@
-#ASP.NET MVC架构与实战系列之三：MVC控件解析
+# ASP.NET MVC架构与实战系列之三：MVC控件解析
 
 俗话说"工欲善其事，必先利其器"，要真正的开发MVC网站，不光要掌握我在前两节提到的理论知识，而且还要拥有强大的武器装备。MVC视图开发是通过HtmlHelper的各种扩展方法来实现的(位于System.Web.Mvc.Html下)。主要包含以下7大类：FormExtensions、InputExtensions、LinkExtensions、SelectExtensions、TextAreaExtensions、ValidationExtensions及RenderPartialExtensions类。不仅如此，通过HtmlHelper的扩展方法还能开发更多的自定义控件(如我以后讲到的GridView等)。下面我一一讲解这些控件。
 
@@ -561,6 +561,6 @@ RenderPartial(string partialViewName,object model,ViewDataDictionary viewData);
 Html.RenderPartial("CategoryList");
 ```
 
-##Reference
+## Reference
 
 * [1] [原文链接](http://www.cnblogs.com/hmiinyu/archive/2012/05/30/2523492.html)

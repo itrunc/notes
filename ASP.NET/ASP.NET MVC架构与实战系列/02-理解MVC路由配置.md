@@ -1,4 +1,4 @@
-#ASP.NET MVC架构与实战系列之二：理解MVC路由配置
+# ASP.NET MVC架构与实战系列之二：理解MVC路由配置
 
 在上一篇文章中，我简短的谈了一下MVC的底层运行机制，如果对MVC还不是很了解的朋友，可以作为入门的参照。接下来，我开始介绍关于URL路由的相关知识。URL路由不是MVC独有的，相反它是独立于MVC而单独存在的(在System.Web.Routing下)。因此，URL路由也能为传统的ASP.NET应用程序服务。我用一个简单的例子来解释路由，在我们的上一节的"ASP.NET MVC应用程序"中添加一个新的页面default.aspx，其后台代码如下：
 
@@ -305,6 +305,6 @@ routes.Add("compose", new Route("blog/compose/{year}/{month}/{day}", new WebForm
 
 点击对应的链接就会进入相关的页面。通过以上的学习，我们发觉可以设置个性化的路由(源代码在此下载)，但请读者考虑如何验证被映射页面的安全性，我将以后的章节中详细讲解。
 
-##Reference
+## Reference
 
 * [1] [原文链接](http://www.cnblogs.com/hmiinyu/archive/2012/05/28/2519661.html)
