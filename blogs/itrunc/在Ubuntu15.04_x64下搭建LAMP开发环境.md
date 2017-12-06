@@ -1,6 +1,6 @@
-#在Ubuntu15.04_x64下搭建LAMP开发环境
+# 在Ubuntu15.04_x64下搭建LAMP开发环境
 
-##基本安装
+## 基本安装
 
 ```
 $ sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server
@@ -9,7 +9,7 @@ $ sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server
 期间会弹出窗口提示输入 MySQL root 用户密码。
 
 
-##添加组件
+## 添加组件
 
 ```
 $ sudo apt-get install php5 [TAB] [TAB]
@@ -29,5 +29,5 @@ php5-fpm            php5-lasso          php5-mysqlnd-ms     php5-raphf-dev      
 php5-gd             php5-ldap           php5-oauth          php5-readline       php5-tokyo-tyrant
 ```
 
-###添加 GD 和 Curl组件
+### 添加 GD 和 Curl组件
 $sudo apt-get install php5-gd php5-curl

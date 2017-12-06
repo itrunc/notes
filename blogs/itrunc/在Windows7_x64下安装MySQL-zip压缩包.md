@@ -1,6 +1,6 @@
-#在Windows7_x64下安装MySQL(zip压缩包)
+# 在Windows7_x64下安装MySQL(zip压缩包)
 
-##下载MySQL
+## 下载MySQL
 
 MySQL下载地址：http://dev.mysql.com/downloads/mysql/
 
@@ -12,13 +12,13 @@ MySQL下载地址：http://dev.mysql.com/downloads/mysql/
 
 点击下方的No thanks, just start my dowload的链接，直接下载MySQL。
 
-##安装MySQL
+## 安装MySQL
 
 下载的zip包是免安装的，将它解压缩到D:\WNMP目录下一个独立的文件夹：mysql-5.5.25-winx64 (备注：安装包在本文撰写之前下载，因此版本号与图片中的版本号不一致，但不影响以下的配置步骤)
 
 ![MySQL安装包](imgs/ins-mysql-win7-6403.install_mysql.png)
 
-##配置初始化参数
+## 配置初始化参数
 
 安装根目录下有几个配置文件(*.ini)可以参考，仔细阅读一下不难发现最大的区别就是对内存缓冲区的配置参数大小。参考网上的说法：
 
@@ -57,7 +57,7 @@ default-character-set = utf8 # 设置MySQL客户端使用的字符集
 
 由于Windows CMD默认使用的字符集是gbk，为了简单地避免出现乱码问题，特在此将它设置为与服务器字符集相同。
 
-##安装MySQL服务
+## 安装MySQL服务
 
 打开CMD(Windows命令行)，执行以下语句：
 
@@ -74,7 +74,7 @@ Service successfully installed.
 
 ![查看mysql服务状态](imgs/ins-mysql-win7-6406.service_mysql.png)
 
-##启动mysql服务
+## 启动mysql服务
 
 在CMD(Windows命令行)输入：
 
@@ -86,7 +86,7 @@ mysql 服务已经启动成功。
 
 备注：关闭服务使用命令net stop mysql
 
-##设置Path环境变量
+## 设置Path环境变量
 
 将MySQL安装目录下的bin添加到变量Path中，如图：
 
@@ -94,7 +94,7 @@ mysql 服务已经启动成功。
 
 作此设置之后，就可以在CMD(Windows命令行)中直接使用mysql命令了。
 
-##连接并登录MySQL
+## 连接并登录MySQL
 
 打开CMD(Windows命令行)，输入：
 
@@ -116,7 +116,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 备注：初次登录root不需要密码，所以在要求输入密码的时候直接按Enter健即可。
 
-##设置root密码
+## 设置root密码
 
 root具有MySQL数据库最高的权限，几乎无所不能，所以必须为它设置一个安全系数最高的密码。
 
@@ -140,7 +140,7 @@ Bye
 
 至此，MySQL数据库安装大餐新鲜出炉，尽情享用吧。
 
-##附录：查看连接基本状态
+## 附录：查看连接基本状态
 
 ````
 mysql> status

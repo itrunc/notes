@@ -1,10 +1,10 @@
-#在Windows7_x64下搭建Nginx+MySQL+Php环境并安装wordpress
+# 在Windows7_x64下搭建Nginx+MySQL+Php环境并安装wordpress
 
-#安装MySQL
+# 安装MySQL
 
 请阅读我写的文章[《在Windows7_x64下安装MySQL(zip压缩包)》](在Windows7_x64下安装MySQL-zip压缩包.md)
 
-#安装php
+# 安装php
 
 PHP下载地址：http://windows.php.net/download/
 
@@ -14,7 +14,7 @@ PHP下载地址：http://windows.php.net/download/
 
 ![09.install_php](imgs/ins-NMPW-win7-64_09.install_php.png)
 
-##配置php
+## 配置php
 
 将php.ini-production文件复制并重命名为php.ini，并用Notepad++(没有安装此软件的话就使用记事本)打开php.ini：
 
@@ -30,7 +30,7 @@ PHP下载地址：http://windows.php.net/download/
 ;cgi.fix_pathinfo=1 | cgi.fix_pathinfo=1
 ;cgi.rfc2616_headers = 0 | cgi.rfc2616_headers = 1
 
-##安装Nginx
+## 安装Nginx
 
 Nginx下载地址：http://nginx.org/en/download.html
 
@@ -40,7 +40,7 @@ Nginx下载地址：http://nginx.org/en/download.html
 
 ![11.install_nginx](imgs/ins-NMPW-win7-64_11.install_nginx.png)
 
-##配置Nginx
+## 配置Nginx
 
 Nginx的配置文件是在安装目录的conf文件夹下的nginx.conf，并用Notepad++(没有安装此软件的话就使用记事本)打开它：
 
@@ -128,7 +128,7 @@ exit
 
 ![12.install.nginx](imgs/ins-NMPW-win7-64_12.install.nginx_.png)
 
-##安装wordpress
+## 安装wordpress
 
 将wordpress压缩包解压到D:\WNMP\nginx-1.5.6\html\目录下(这个目录是我们已配置的nginx默认根目录)，并将文件夹重命名为wp，如下：
 

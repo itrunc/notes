@@ -1,4 +1,4 @@
-#亦步亦趋在CentOS 6.4 64-bit编译安装nginx
+# 亦步亦趋在CentOS 6.4 64-bit编译安装nginx
 
 在root下操作
 

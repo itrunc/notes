@@ -1,4 +1,4 @@
-#亦步亦趋在CentOS 64-bit下编译安装php
+# 亦步亦趋在CentOS 64-bit下编译安装php
 
 在安装php之前先确保已经安装GD库，如果未安装，则可使用yum方式快捷安装GD：
 

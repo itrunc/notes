@@ -1,4 +1,4 @@
-#亦步亦趋在CentOS 64-bit编译安装MySQL
+# 亦步亦趋在CentOS 64-bit编译安装MySQL
 
 在CentOS中安装MySQL有三种方式：yum安装、rpm安装和编译安装。yum安装最便捷，但是所安装的mysql版本会相对比较低。rpm方式安装也相对便捷。编译安装最繁琐，如果非要将繁琐说是一项优点的话，那么它可以让你更了解mysql。
 
