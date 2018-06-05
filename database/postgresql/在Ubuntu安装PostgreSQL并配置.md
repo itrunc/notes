@@ -103,13 +103,15 @@ passwd: password updated successfully
 
 安装完成后，默认只能本地才能连接数据库，其他机子访问不了，需要进行配置。（以下示例开放了最大连接权限，实际配置根据你的需要而定）
 
-### 1、修改监听地址
+### 1、修改监听地址，并启用密码验证
 
 ```bash
 sudo gedit /etc/postgresql/9.5/main/postgresql.conf 
 ```
 
-将 #listen_addresses = 'localhost' 的注释去掉并改为 listen_addresses = '*' 
+将 `#listen_addresses = 'localhost'` 的注释去掉并改为 `listen_addresses = '*'`
+
+将 `#password_encryption = on` 的注释去掉
 
 ### 2、修改可访问用户的IP段
 
@@ -125,7 +127,11 @@ sudo gedit /etc/postgresql/9.5/main/pg_hba.conf
 sudo /etc/init.d/postgresql restart
 ```
 
-其他：管理用户、建立数据库等
+### 4、5432端口的防火墙配置
+
+```bash
+iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 5432 -j ACCEPT
+```
 
 # 五、添加新用户和新数据库
 
